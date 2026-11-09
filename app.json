@@ -1,6 +1,6 @@
 {
-  "name": "File Store Bot",
-  "description": "Telegram file store bot by Trinity Mods — private share links, 0-4 force-sub channels, referral & dual access modes, start image, shortener earnings, auto-delete and premium.",
+  "name": "Mariya",
+  "description": "Mariya — Telegram file storage and sharing assistant with private links, force-sub, referral access, and configurable file delivery.",
   "keywords": [
     "telegram",
     "file-store",
@@ -10,9 +10,9 @@
     "pyrofork",
     "mongodb"
   ],
-  "repository": "https://github.com/Trinity-Mods/File-Store-Bot",
-  "website": "https://github.com/Trinity-Mods",
-  "logo": "https://raw.githubusercontent.com/Trinity-Mods/File-Store-Bot/main/assets/icon.png",
+  "repository": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
+  "website": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
+  "logo": "https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/icon.png",
   "success_url": "/",
   "env": {
     "TG_BOT_TOKEN": {
@@ -100,7 +100,7 @@
     },
     "TIME": {
       "description": "Delete delivered files after this many seconds (0 = never).",
-      "value": "600",
+      "value": "0",
       "required": false
     },
     "PROTECT_CONTENT": {
@@ -140,12 +140,12 @@
     },
     "TUT_VID": {
       "description": "Tutorial link showing users how to pass your shortener.",
-      "value": "https://t.me/trinityXmods/53",
+      "value": "",
       "required": false
     },
     "USE_PAYMENT": {
       "description": "TRUE shows premium plans (works with USE_SHORTLINK). Premium users skip the shortener and referrals.",
-      "value": "TRUE",
+      "value": "FALSE",
       "required": false
     },
     "UPI_ID": {
