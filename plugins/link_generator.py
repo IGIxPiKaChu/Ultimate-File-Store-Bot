@@ -22,10 +22,10 @@ from helper_func import admin_filter, encode, get_message_id
 async def batch(client: Client, message: Message):
     while True:
         try:
-            first_message = await client.ask(text = "Forward the First Message from DB Channel ⏩ (with Quotes)..\n\nor Send the DB Channel Post Link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | (filters.text & ~filters.forwarded)), timeout=60)
+            first_message = await client.ask(text = "Forward the First Message from DB Channel ⏩ (with Quotes)..\n\nor Send the DB Channel Post Link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | filters.regex(r"(?i)^https?://t\\.me/(?:c/\\d+|[A-Za-z0-9_]+)/\\d+(?:\\?.*)?$") | filters.command("sbatch")), timeout=60)
         except ListenerTimeout:
             return
-        if first_message.text == "/sbatch":
+        if (first_message.text or "").split("@", 1)[0].split()[0].lower() == "/sbatch":
             return
         f_msg_id = await get_message_id(client, first_message)
 
@@ -36,10 +36,10 @@ async def batch(client: Client, message: Message):
             continue
     while True:
         try:
-            second_message = await client.ask(text = "Forward the Last Message from DB Channel ⏩ (with Quotes)..\nor Send the DB Channel Post link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | (filters.text & ~filters.forwarded)), timeout=60)
+            second_message = await client.ask(text = "Forward the Last Message from DB Channel ⏩ (with Quotes)..\nor Send the DB Channel Post link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | filters.regex(r"(?i)^https?://t\\.me/(?:c/\\d+|[A-Za-z0-9_]+)/\\d+(?:\\?.*)?$") | filters.command("sgen")), timeout=60)
         except ListenerTimeout:
             return
-        if second_message.text == "/sbatch":
+        if (second_message.text or "").split("@", 1)[0].split()[0].lower() == "/sbatch":
             return
         s_msg_id = await get_message_id(client, second_message)
         if s_msg_id:
@@ -63,7 +63,7 @@ async def link_generator(client: Client, message: Message):
             channel_message = await client.ask(text = "Forward Message from the DB Channel ⏩ (with Quotes)..\nor Send the DB Channel Post link\nType /sgen for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | (filters.text & ~filters.forwarded)), timeout=60)
         except ListenerTimeout:
             return
-        if channel_message.text == "/sgen":
+        if (channel_message.text or "").split("@", 1)[0].split()[0].lower() == "/sgen":
             return
         msg_id = await get_message_id(client, channel_message)
         if msg_id:
