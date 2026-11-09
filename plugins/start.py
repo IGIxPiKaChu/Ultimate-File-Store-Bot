@@ -20,6 +20,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from bot import Bot
 from config import LOGGER
 from core import access, pipeline, referral
+from core.pipeline import parse_request
 from database.database import register_user
 from helper_func import REF_PREFIX
 
@@ -54,9 +55,18 @@ async def gen_link_encoded(client: Bot, message: Message):
         )
     except ListenerTimeout:
         return await message.reply("⏳ ᴛɪᴍᴇ'ꜱ ᴜᴘ! ꜱᴇɴᴅ /ch2l ᴀɢᴀɪɴ ᴡʜᴇɴ ʏᴏᴜ'ʀᴇ ʀᴇᴀᴅʏ.", quote=True)
-    if not code.text or code.text.strip() == "/cancel":
+    candidate = (code.text or "").strip()
+    if candidate.split("@", 1)[0].lower() == "/cancel":
         return await code.reply("Cancelled 😉!")
-    link = f"https://t.me/{client.username}?start={code.text.strip()}"
+    # Never turn arbitrary chat text or unknown slash commands into share links.
+    # /ch2l accepts only a payload that the bot can parse as a real stored-file link.
+    request = await parse_request(client, candidate)
+    if not request.is_file:
+        return await code.reply(
+            "❌ That isn't a valid Mariya file code. Send a valid file-link code, or /cancel to stop.",
+            quote=True,
+        )
+    link = f"https://t.me/{client.username}?start={candidate}"
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🎉 Click Here ", url=link)]])
     await code.reply_text("<b>🧑‍💻 Here is your generated link</b>", quote=True, reply_markup=reply_markup)
 
