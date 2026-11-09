@@ -1,7 +1,7 @@
 <!-- ⚡ TRINITY MODS · FILE STORE BOT — github.com/Trinity-Mods/File-Store-Bot -->
 
 <p align="center">
-  <img src="assets/banner.png" alt="Mariya project banner" width="100%"/>
+  <img src="assets/mariya-banner.svg" alt="Mariya project banner" width="100%"/>
 </p>
 
 <h1 align="center">Mariya</h1>
@@ -339,7 +339,7 @@ File-Store-Bot/
 ├── core/                🧠 engine: access modes, force-sub, referrals, delivery, screens
 ├── plugins/             🔌 Telegram commands & buttons
 ├── database/            🗄️ MongoDB storage
-├── assets/              🎨 Mariya project artwork and start picture
+├── assets/              🎨 Mariya logo and banner, plus upstream reference artwork
 ├── .env.example         🔑 sample settings for VPS / local runs
 ├── app.json             🟣 Heroku one-click deploy
 ├── Dockerfile · Procfile · requirements.txt · .python-version
@@ -427,7 +427,7 @@ Values changed in `/settings` take priority over the config. Open `/settings` an
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="assets/wordmark-light.png">
       <source media="(prefers-color-scheme: light)" srcset="assets/wordmark-dark.png">
-      <img alt="Mariya" src="assets/wordmark-dark.png" width="340">
+      <img alt="Mariya" src="assets/mariya-mark.svg" width="120">
     </picture>
   </a>
 </p>
