@@ -92,11 +92,11 @@ class Bot(Client):
         if settings.fsub_on and not chats:
             log.warning("Force-sub is enabled but no FORCE_SUB_CHANNEL is set — that step is skipped.")
         log.info(
-            f"File Store Bot v{__version__} is live as @{self.username} | mode: {settings.mode} | "
+            f"Mariya v{__version__} is live as @{self.username} | mode: {settings.mode} | "
             f"force-sub chats: {len(chats)} | referral goal: {settings.referral_count} | "
             f"auto-delete jobs restored: {restored}"
         )
-        self.LOGGER(__name__).info("Bot made by @the_universal_being!")
+        self.LOGGER(__name__).info("Mariya bot started successfully.")
         try:
             await self.send_message(
                 chat_id=OWNER_ID,
