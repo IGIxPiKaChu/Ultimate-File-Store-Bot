@@ -25,6 +25,16 @@ log = LOGGER(__name__)
 
 @Bot.on_message(filters.private & admin_filter & ~filters.command(KNOWN_COMMANDS))
 async def channel_post(client: Client, message: Message):
+    # This handler is the admin upload catch-all. Never store plain text or
+    # unknown slash commands as files, otherwise every typo creates a share link.
+    if not any((message.document, message.video, message.audio, message.animation,
+                message.photo, message.voice, message.video_note)):
+        return await message.reply_text(
+            "❌ I can only upload media/files here. Send a document, photo, video or audio file. "
+            "Use /help to see commands.",
+            quote=True,
+        )
+
     reply_text = await message.reply_text("Please Wait...! 🫷", quote = True)
     try:
         post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)
