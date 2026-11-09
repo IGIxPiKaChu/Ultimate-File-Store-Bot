@@ -31,7 +31,7 @@ VERIFY_PREFIX = "verify_"
 MAX_BATCH = 1000
 
 # Every command the bot understands — the catch-all handlers ignore these.
-USER_COMMANDS = ['start', 'ping', 'ch2l', 'refer', 'referral', 'invite', 'auth', 'cancel']
+USER_COMMANDS = ['start', 'help', 'ping', 'ch2l', 'refer', 'referral', 'invite', 'auth', 'cancel']
 ADMIN_COMMANDS = [
     'users', 'broadcast', 'batch', 'genlink', 'stats', 'sbatch', 'sgen', 'exit', 'add_admin', 'del_admin',
     'admins', 'add_prem', 'restart', 'settings', 'refstats', 'addrefs', 'auth_secret', 'deauth_secret',
