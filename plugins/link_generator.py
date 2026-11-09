@@ -22,7 +22,7 @@ from helper_func import admin_filter, encode, get_message_id
 async def batch(client: Client, message: Message):
     while True:
         try:
-            first_message = await client.ask(text = "Forward the First Message from DB Channel ⏩ (with Quotes)..\n\nor Send the DB Channel Post Link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | filters.regex(r"(?i)^https?://t\.me/(?:c/\\d+|[A-Za-z0-9_]+)/\\d+(?:\\?.*)?$") | filters.command("sbatch")), timeout=60)
+            first_message = await client.ask(text = "Forward the First Message from DB Channel ⏩ (with Quotes)..\n\nor Send the DB Channel Post Link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | filters.regex(r"(?i)^https?://t\.me/(?:c/\d+|[A-Za-z0-9_]+)/\d+(?:\?.*)?$") | filters.command("sbatch")), timeout=60)
         except ListenerTimeout:
             return
         if (first_message.text or "").split("@", 1)[0].split()[0].lower() == "/sbatch":
@@ -36,7 +36,7 @@ async def batch(client: Client, message: Message):
             continue
     while True:
         try:
-            second_message = await client.ask(text = "Forward the Last Message from DB Channel ⏩ (with Quotes)..\nor Send the DB Channel Post link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | filters.regex(r"(?i)^https?://t\.me/(?:c/\\d+|[A-Za-z0-9_]+)/\\d+(?:\\?.*)?$") | filters.command("sbatch")), timeout=60)
+            second_message = await client.ask(text = "Forward the Last Message from DB Channel ⏩ (with Quotes)..\nor Send the DB Channel Post link\nUse /sbatch for stopping.", chat_id = message.from_user.id, filters=(filters.forwarded | filters.regex(r"(?i)^https?://t\.me/(?:c/\d+|[A-Za-z0-9_]+)/\d+(?:\?.*)?$") | filters.command("sbatch")), timeout=60)
         except ListenerTimeout:
             return
         if (second_message.text or "").split("@", 1)[0].split()[0].lower() == "/sbatch":
