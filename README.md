@@ -275,8 +275,8 @@ Set these as **environment variables**, in a **`.env`** file, or directly in **[
 | `U_S_E_P` | `TRUE` | `TRUE` = every link is shortened · `FALSE` = token verification |
 | `VERIFY_EXPIRE` | `43200` | How long a verified token lasts (seconds) |
 | `TUT_VID` | *empty* | "How to download / verify" link |
-| `USE_PAYMENT` | `TRUE` | Show premium plans (needs `USE_SHORTLINK`) |
-| `UPI_ID` · `UPI_IMAGE_URL` | — | Payment details & QR image |
+| `USE_PAYMENT` | `FALSE` | Show premium plans (needs `USE_SHORTLINK`) |
+| `UPI_ID` · `UPI_IMAGE_URL` | empty | Payment details & QR image |
 | `PRICE1` … `PRICE5` | `₹200` … `₹2850` | 7 days · 1 month · 3 months · 6 months · 1 year |
 
 </details>
