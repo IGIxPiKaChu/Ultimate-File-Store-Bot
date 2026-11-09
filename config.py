@@ -151,7 +151,7 @@ DB_NAME = env_text("DB_NAME", "FileStoreBot")
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # Your public Telegram username (without @). Users are sent here for support and payment screenshots.
-OWNER_TAG = env_text("OWNER_TAG", "the_universal_being").lstrip("@")
+OWNER_TAG = env_text("OWNER_TAG", "").lstrip("@")
 # Extra admins — Telegram user IDs separated by spaces. Admins can store files, create links and broadcast.
 # Example: 6011680723 1234567890   (the owner is always an admin)
 ADMINS = env_ids("ADMINS", "")
@@ -260,12 +260,12 @@ TUT_VID = env_url("TUT_VID", "")
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Premium users skip the shortener AND the referral requirement. Admins add them with /add_prem.
 
-USE_PAYMENT = env_bool("USE_PAYMENT", True) and USE_SHORTLINK
+USE_PAYMENT = env_bool("USE_PAYMENT", False) and USE_SHORTLINK
 # Your UPI ID and a direct link to your UPI QR code image.
-UPI_ID = env_text("UPI_ID", "sendrajbooks@fam")
-UPI_IMAGE_URL = env_url("UPI_IMAGE_URL", "https://envs.sh/Vpg.jpg")
+UPI_ID = env_text("UPI_ID", "")
+UPI_IMAGE_URL = env_url("UPI_IMAGE_URL", "")
 # Where users send their payment screenshot (defaults to your OWNER_TAG chat).
-SCREENSHOT_URL = env_url("SCREENSHOT_URL", f"https://t.me/{OWNER_TAG}")
+SCREENSHOT_URL = env_url("SCREENSHOT_URL", "")
 # Plan prices — change only the amounts / currency.
 PRICE1 = env_text("PRICE1", "₹200")    # 7 days
 PRICE2 = env_text("PRICE2", "₹500")    # 1 month
