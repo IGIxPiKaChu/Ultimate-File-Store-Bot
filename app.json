@@ -12,7 +12,7 @@
   ],
   "repository": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
   "website": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
-  "logo": "https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/icon.png",
+  "logo": "https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/mariya-mark.svg",
   "success_url": "/",
   "env": {
     "TG_BOT_TOKEN": {
