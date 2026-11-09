@@ -32,7 +32,8 @@ async def start_command(client: Bot, message: Message):
     user = message.from_user
     if not user or user.is_bot:
         return
-    payload = message.command[1] if len(message.command) > 1 else ""
+    commands = message.command or []
+    payload = commands[1] if len(commands) > 1 else ""
 
     referrer = None
     if payload.startswith(REF_PREFIX) and access.current().referral_on and not (user.is_scam or user.is_fake):
