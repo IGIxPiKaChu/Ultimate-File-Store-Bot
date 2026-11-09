@@ -4,11 +4,11 @@
   <img src="assets/banner.png" alt="Trinity Mods" width="100%"/>
 </p>
 
-<h1 align="center">File Store Bot</h1>
+<h1 align="center">Mariya</h1>
 
 <p align="center">
-  <b>Store · Link · Protect · Grow · Monetize</b><br>
-  The all-in-one Telegram file store bot by <b>Trinity Mods</b>
+  <b>Store · Link · Protect · Share</b><br>
+  Mariya — your Telegram file storage and sharing assistant
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-2.0.0-5BF5C1?style=for-the-badge&labelColor=080F0D" alt="version"/>
-  <img src="https://img.shields.io/badge/python-3.13-5BF5C1?style=for-the-badge&logo=python&logoColor=5BF5C1&labelColor=080F0D" alt="python"/>
+  <img src="https://img.shields.io/badge/python-3.11-5BF5C1?style=for-the-badge&logo=python&logoColor=5BF5C1&labelColor=080F0D" alt="python"/>
   <img src="https://img.shields.io/badge/pyrofork-2.3-5BF5C1?style=for-the-badge&logo=telegram&logoColor=5BF5C1&labelColor=080F0D" alt="pyrofork"/>
   <img src="https://img.shields.io/badge/mongodb-async-5BF5C1?style=for-the-badge&logo=mongodb&logoColor=5BF5C1&labelColor=080F0D" alt="mongodb"/>
   <img src="https://img.shields.io/badge/license-GPL--3.0-5BF5C1?style=for-the-badge&labelColor=080F0D" alt="license"/>
@@ -44,6 +44,9 @@
 ---
 
 ## 🤖 About
+
+**Mariya** is a customized deployment of this open-source file-store project. The original upstream attribution and GPL licence notices are retained in accordance with the source licence.
+
 
 **File Store Bot** turns any file into a private Telegram link. Admins send files to the bot, the bot
 stores them in a private channel, and users who open the link get the file — after they join your channels,
@@ -185,8 +188,8 @@ the text — `/start` never breaks. Telegram allows **1024 characters** under a 
 ### 🐳 Docker
 
 ```bash
-git clone https://github.com/Trinity-Mods/File-Store-Bot.git
-cd File-Store-Bot
+git clone https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot.git
+cd Ultimate-File-Store-Bot
 cp .env.example .env        # then fill in your values
 docker build -t file-store-bot .
 docker run -d --name file-store-bot --env-file .env --restart unless-stopped file-store-bot
