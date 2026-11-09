@@ -119,7 +119,7 @@ class Bot(Client):
             await dbclient.close()
         except Exception:
             pass
-        self.LOGGER(__name__).info("Bot stopped. Contact @the_universal_being")
+        self.LOGGER(__name__).info("Mariya stopped.")
 
 # ────────────────────────────────────────────────────────────────
 
