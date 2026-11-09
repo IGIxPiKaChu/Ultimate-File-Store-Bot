@@ -1,7 +1,7 @@
 <!-- ⚡ TRINITY MODS · FILE STORE BOT — github.com/Trinity-Mods/File-Store-Bot -->
 
 <p align="center">
-  <img src="assets/banner.png" alt="Trinity Mods" width="100%"/>
+  <img src="assets/banner.png" alt="Mariya project banner" width="100%"/>
 </p>
 
 <h1 align="center">Mariya</h1>
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2600&pause=700&color=5BF5C1&center=true&vCenter=true&width=760&height=52&lines=Any+file+%E2%86%92+a+private+share+link;Force-sub+with+0+to+4+channels;Referral+%26+Dual+access+modes;Start+image%2C+shortener+%26+premium;Live+%2Fsettings+panel+for+owners" alt="File Store Bot features"/>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2600&pause=700&color=5BF5C1&center=true&vCenter=true&width=760&height=52&lines=Any+file+%E2%86%92+a+private+share+link;Force-sub+with+0+to+4+channels;Referral+%26+Dual+access+modes;Start+image%2C+shortener+%26+premium;Live+%2Fsettings+panel+for+owners" alt="Mariya features"/>
 </p>
 
 <p align="center">
@@ -48,7 +48,7 @@
 **Mariya** is a customized deployment of this open-source file-store project. The original upstream attribution and GPL licence notices are retained in accordance with the source licence.
 
 
-**File Store Bot** turns any file into a private Telegram link. Admins send files to the bot, the bot
+**Mariya** turns any file into a private Telegram link. Admins send files to the bot, the bot
 stores them in a private channel, and users who open the link get the file — after they join your channels,
 invite friends, or pass your shortener, depending on how you set it up.
 
@@ -156,8 +156,8 @@ Set `START_PIC` to any of these:
 | Image in the repo | `assets/start.jpg` |
 | Several (random) | `https://…/one.jpg https://…/two.jpg` |
 
-A ready-made Trinity Mods picture is included:
-`https://raw.githubusercontent.com/Trinity-Mods/File-Store-Bot/main/assets/start.jpg`
+A ready-made start picture is included in `assets/start.jpg`:
+`assets/start.jpg`
 
 The same formats work for `FORCE_PIC` and `REFERRAL_PIC`. If a picture can't be sent, the bot simply sends
 the text — `/start` never breaks. Telegram allows **1024 characters** under a picture; longer texts are sent without it.
@@ -198,8 +198,8 @@ docker run -d --name file-store-bot --env-file .env --restart unless-stopped fil
 ### 🖥️ VPS / PC
 
 ```bash
-git clone https://github.com/Trinity-Mods/File-Store-Bot.git
-cd File-Store-Bot
+git clone https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot.git
+cd Ultimate-File-Store-Bot
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env        # then fill in your values
@@ -254,7 +254,7 @@ Set these as **environment variables**, in a **`.env`** file, or directly in **[
 | --- | --- | --- |
 | `START_MESSAGE` | *built-in* | The `/start` text (`START_MSG` also works) |
 | `START_PIC` | *empty* | Start picture — link, file_id or repo path; several = random |
-| `CUSTOM_CAPTION` | *Trinity Mods credit* | Caption for delivered files (`none` keeps originals) |
+| `CUSTOM_CAPTION` | *Mariya credit* | Caption for delivered files (`none` keeps originals) |
 | `PROTECT_CONTENT` | `FALSE` | Block forwarding / saving of delivered files |
 | `TIME` | `600` | Auto-delete delivered files after N seconds (`0` = never) |
 | `DISABLE_CHANNEL_BUTTON` | `TRUE` | Hide the "Share URL" button under DB-channel posts |
@@ -274,7 +274,7 @@ Set these as **environment variables**, in a **`.env`** file, or directly in **[
 | `SHORTLINK_API_URL` · `SHORTLINK_API_KEY` | `gplinks.com` · *empty* | Your shortener and API key |
 | `U_S_E_P` | `TRUE` | `TRUE` = every link is shortened · `FALSE` = token verification |
 | `VERIFY_EXPIRE` | `43200` | How long a verified token lasts (seconds) |
-| `TUT_VID` | *Trinity tutorial* | "How to download / verify" link |
+| `TUT_VID` | *empty* | "How to download / verify" link |
 | `USE_PAYMENT` | `TRUE` | Show premium plans (needs `USE_SHORTLINK`) |
 | `UPI_ID` · `UPI_IMAGE_URL` | — | Payment details & QR image |
 | `PRICE1` … `PRICE5` | `₹200` … `₹2850` | 7 days · 1 month · 3 months · 6 months · 1 year |
@@ -339,7 +339,7 @@ File-Store-Bot/
 ├── core/                🧠 engine: access modes, force-sub, referrals, delivery, screens
 ├── plugins/             🔌 Telegram commands & buttons
 ├── database/            🗄️ MongoDB storage
-├── assets/              🎨 Trinity Mods logos & start picture
+├── assets/              🎨 Mariya project artwork and start picture
 ├── .env.example         🔑 sample settings for VPS / local runs
 ├── app.json             🟣 Heroku one-click deploy
 ├── Dockerfile · Procfile · requirements.txt · .python-version
@@ -427,7 +427,7 @@ Values changed in `/settings` take priority over the config. Open `/settings` an
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="assets/wordmark-light.png">
       <source media="(prefers-color-scheme: light)" srcset="assets/wordmark-dark.png">
-      <img alt="Trinity Mods" src="assets/wordmark-dark.png" width="340">
+      <img alt="Mariya" src="assets/wordmark-dark.png" width="340">
     </picture>
   </a>
 </p>
