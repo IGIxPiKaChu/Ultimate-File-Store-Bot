@@ -25,7 +25,7 @@ from config import ADMINS, DB_URL, DB_NAME, LOGGER
 
 log = LOGGER(__name__)
 
-dbclient = AsyncMongoClient(DB_URL, appname="FileStoreBot")
+dbclient = AsyncMongoClient(DB_URL, appname="Mariya")
 database = dbclient[DB_NAME]
 
 user_data = database['users']
