@@ -9,7 +9,7 @@
 
 # ────────────────────────────────────────────────────────────────
 
-#  ⚙️  FILE STORE BOT — CONFIGURATION
+#  ⚙️  MARIYA — CONFIGURATION
 #
 #  Every setting below can be provided in three ways (the first one found wins):
 #    1. An environment variable → Heroku / Koyeb / Render / Railway dashboard, or `docker run -e ...`
