@@ -157,6 +157,11 @@
       "description": "Direct link to your UPI QR code image.",
       "value": "",
       "required": false
+    },
+    "SCREENSHOT_URL": {
+      "description": "Optional payment screenshot destination URL.",
+      "value": "",
+      "required": false
     }
   },
   "buildpacks": [
