@@ -1,4 +1,5 @@
 name: Repair uploaded project paths
+# Re-triggered to restore the flattened upload into its original layout.
 
 on:
   push:
