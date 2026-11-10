@@ -19,7 +19,7 @@ from pyrogram import filters
 from pyrogram.errors import FloodWait
 from shortzy import Shortzy
 
-from config import ADMINS, LOGGER, SHORTLINK_API_KEY, SHORTLINK_API_URL, VERIFY_EXPIRE
+from config import ADMINS, LOGGER, OWNER_ID, SHORTLINK_API_KEY, SHORTLINK_API_URL, VERIFY_EXPIRE
 from database.database import db_update_verify_status, db_verify_status, get_user, set_premium
 
 log = LOGGER(__name__)
@@ -45,6 +45,15 @@ async def _is_admin(_, __, update):
 
 # Live admin filter — it always sees admins added or removed with /add_admin and /del_admin.
 admin_filter = filters.create(_is_admin, name="AdminFilter")
+
+
+async def _is_owner(_, __, update):
+    user = getattr(update, "from_user", None)
+    return bool(user) and OWNER_ID > 0 and user.id == OWNER_ID
+
+
+# Uploading new files into the private DB channel is owner-only.
+owner_filter = filters.create(_is_owner, name="OwnerFilter")
 
 
 # ── link encoding ────────────────────────────────────────────────
