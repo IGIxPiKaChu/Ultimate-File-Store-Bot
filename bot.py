@@ -51,27 +51,20 @@ class Bot(Client):
                 self.LOGGER(__name__).exception("Force-sub channel setup failed. Check FORCE_SUB_CHANNEL and invite-link permission.")
                 sys.exit(1)
 
+        # Pyrogram's GetDialogs method is not available to bot accounts.
+        # A private channel peer is learned from an incoming channel_post update.
+        # Try the cache once; if it is not known yet, let the bot start and
+        # initialize db_channel when the first channel post arrives.
+        self.db_channel = None
         try:
-            # A bot may not have a private channel's access hash cached after a fresh deploy.
-            # Enumerating dialogs refreshes Pyrogram's peer storage before resolving by ID.
-            db_channel = None
-            async for dialog in self.get_dialogs():
-                if dialog.chat.id == CHANNEL_ID:
-                    db_channel = dialog.chat
-                    break
-            if db_channel is None:
-                db_channel = await self.get_chat(CHANNEL_ID)
-
-            self.db_channel = db_channel
-            test = await self.send_message(chat_id=db_channel.id, text="Mariya storage connection test")
-            await test.delete()
-        except Exception:
-            self.LOGGER(__name__).exception(
-                "DB channel connection failed. Confirm CHANNEL_ID is correct and that this bot account "
-                "is a channel administrator. For a private channel, post one fresh message after adding "
-                "the bot, then restart the service so Pyrogram can learn the channel peer."
+            self.db_channel = await self.get_chat(CHANNEL_ID)
+            self.LOGGER(__name__).info("Mariya storage channel resolved from peer cache.")
+        except Exception as e:
+            self.LOGGER(__name__).warning(
+                "Storage channel is not in Pyrogram's peer cache yet (%s). "
+                "Post one new message in the configured private storage channel "
+                "after startup; the bot will learn the channel from that update.", e
             )
-            sys.exit(1)
 
         self.set_parse_mode(ParseMode.HTML)
         self.LOGGER(__name__).info("Mariya bot connected successfully and is running.")
