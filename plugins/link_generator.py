@@ -15,8 +15,12 @@ def _share_markup(link: str):
     ]])
 
 
-@Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("batch"))
+@Bot.on_message(filters.private & filters.user(ADMINS) & filters.command(["batch", "upload"]))
 async def batch(client: Bot, message: Message):
+    if message.command[0].lower() == "upload" and (len(message.command) < 2 or message.command[1].lower() != "batch"):
+        await message.reply_text("Use /upload batch to start a batch upload.")
+        return
+
     if not getattr(client, "db_channel", None):
         await message.reply_text(
             "Storage channel is not initialized yet. Post a new message in "
@@ -31,7 +35,7 @@ async def batch(client: Bot, message: Message):
 
     if message.from_user.id in sessions:
         await message.reply_text(
-            "A batch is already active. Forward your files, then send /stop. "
+            "A batch is already active. Forward your files, then send /complete. "
             "Use /cancel to discard the session."
         )
         return
@@ -46,17 +50,17 @@ async def batch(client: Bot, message: Message):
         "💗 <b>Batch upload started.</b>\n\n"
         "Now forward videos/files from any channel to Mariya. "
         "I'll save each one to the private storage channel.\n\n"
-        "When finished, send /stop to receive one link for the whole batch.\n"
+        "When finished, send /complete to receive one link for the whole batch.\n"
         "Send /cancel to discard the batch session."
     )
 
 
-@Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("stop"))
+@Bot.on_message(filters.private & filters.user(ADMINS) & filters.command(["stop", "complete"]))
 async def stop_batch(client: Bot, message: Message):
     sessions = getattr(client, "upload_sessions", {})
     session = sessions.get(message.from_user.id)
     if session is None:
-        await message.reply_text("There is no active batch. Send /batch to start one.")
+        await message.reply_text("There is no active batch. Send /upload batch to start one.")
         return
 
     # Let earlier forwarded-message updates enter their handlers, then wait
@@ -71,7 +75,7 @@ async def stop_batch(client: Bot, message: Message):
 
     if not count or first_id is None or last_id is None:
         await message.reply_text(
-            "The batch is empty, so I didn't create a link. Send /batch to try again."
+            "The batch is empty, so I didn't create a link. Send /upload batch to try again."
         )
         return
 
@@ -108,6 +112,6 @@ async def cancel_batch(client: Bot, message: Message):
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("genlink"))
 async def link_generator(client: Bot, message: Message):
     await message.reply_text(
-        "For multiple files: send /batch, forward your files, then send /stop. "
+        "For multiple files: send /upload batch, forward your files, then send /complete. "
         "For one file: just forward it to me."
     )
