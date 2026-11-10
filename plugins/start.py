@@ -24,6 +24,7 @@ from database.database import register_user
 from helper_func import REF_PREFIX
 
 log = LOGGER(__name__)
+_DENIAL_COOLDOWN = {}
 
 
 async def _is_non_admin(_, __, message):
@@ -36,7 +37,11 @@ async def restrict_non_admin_messages(client: Bot, message: Message):
         parts = message.text.split(maxsplit=1)
         if len(parts) == 2 and parts[1].strip():
             return
-    await message.reply_text("Baka you are not my master")
+    now = time.monotonic()
+    last_reply = _DENIAL_COOLDOWN.get(message.from_user.id, 0)
+    if now - last_reply >= 60:
+        _DENIAL_COOLDOWN[message.from_user.id] = now
+        await message.reply_text("Baka you are not my master")
     raise StopPropagation
 
 

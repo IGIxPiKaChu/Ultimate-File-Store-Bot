@@ -98,16 +98,7 @@ class Bot(Client):
         )
         self.LOGGER(__name__).info("Bot made by @the_universal_being!")
         try:
-            await self.send_message(
-                chat_id=OWNER_ID,
-                text=(
-                    "<b>Bot has started! 😉</b>\n\n"
-                    f"🔁 ᴍᴏᴅᴇ: <b>{access.MODE_LABELS[settings.mode]}</b>\n"
-                    f"📢 ꜰᴏʀᴄᴇ-ꜱᴜʙ ᴄʜᴀᴛꜱ: <b>{len(chats)}</b>\n"
-                    f"👥 ʀᴇꜰᴇʀʀᴀʟ ɢᴏᴀʟ: <b>{settings.referral_count}</b>\n\n"
-                    "<i>ꜱᴇɴᴅ /settings ᴛᴏ ᴄʜᴀɴɢᴇ ᴛʜᴇ ᴀᴄᴄᴇꜱꜱ ᴍᴏᴅᴇ ʟɪᴠᴇ.</i>"
-                ),
-            )
+            await self.send_message(chat_id=OWNER_ID, text="💗 Mariya is live now.")
         except Exception as e:
             log.warning(f"Couldn't message the owner ({e}). Send /start to the bot from the OWNER_ID account.")
 
