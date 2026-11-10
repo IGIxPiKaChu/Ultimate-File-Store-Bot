@@ -13,17 +13,31 @@
 
 import time
 
-from pyrogram import filters
+from pyrogram import filters, StopPropagation
 from pyrogram.errors import ListenerTimeout
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from bot import Bot
-from config import LOGGER
+from config import ADMINS, LOGGER
 from core import access, pipeline, referral
 from database.database import register_user
 from helper_func import REF_PREFIX
 
 log = LOGGER(__name__)
+
+
+async def _is_non_admin(_, __, message):
+    return bool(message.from_user) and message.from_user.id not in ADMINS
+
+
+@Bot.on_message(filters.private & filters.create(_is_non_admin), group=-1)
+async def restrict_non_admin_messages(client: Bot, message: Message):
+    if message.text and message.text.startswith("/start"):
+        parts = message.text.split(maxsplit=1)
+        if len(parts) == 2 and parts[1].strip():
+            return
+    await message.reply_text("Baka you are not my master")
+    raise StopPropagation
 
 
 @Bot.on_message(filters.command('start') & filters.private)

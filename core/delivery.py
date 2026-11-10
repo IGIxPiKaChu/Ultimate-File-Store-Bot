@@ -21,7 +21,7 @@ from pyrogram.enums import ParseMode
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from config import CUSTOM_CAPTION, LOGGER, PROTECT_CONTENT
+from config import LOGGER, PROTECT_CONTENT
 from database.database import add_delete_job, pending_delete_jobs, remove_delete_job
 from helper_func import get_exp_time, get_messages, safe_format
 
@@ -43,16 +43,8 @@ _tasks = set()
 
 
 def _caption(msg) -> str:
-    original = msg.caption.html if msg.caption else ""
-    media = msg.document or msg.video or msg.audio or msg.animation
-    if CUSTOM_CAPTION and media:
-        return safe_format(
-            CUSTOM_CAPTION,
-            previouscaption=original,
-            filename=html.escape(getattr(media, "file_name", None) or ""),
-        )
-    return original
-
+    """Keep the source media caption unchanged; never append a bot promo."""
+    return msg.caption.html if msg.caption else ""
 
 async def _copy(msg, chat_id: int):
     caption = _caption(msg)

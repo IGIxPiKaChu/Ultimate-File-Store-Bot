@@ -35,6 +35,18 @@ async def _resume(client, query: CallbackQuery, payload: str):
 
 # ── force-sub: "Try Again" ───────────────────────────────────────
 
+async def _is_non_admin_callback(_, __, query):
+    return bool(query.from_user) and query.from_user.id not in ADMINS
+
+
+@Bot.on_callback_query(filters.create(_is_non_admin_callback), group=-1)
+async def restrict_non_admin_callbacks(client: Bot, query: CallbackQuery):
+    if query.data.startswith(("fsub:file", "fsub:home", "ref:check")):
+        return
+    await query.answer("Baka you are not my master", show_alert=True)
+    raise StopPropagation
+
+
 @Bot.on_callback_query(filters.regex(r"^fsub:(file|home)$"))
 async def fsub_retry(client: Bot, query: CallbackQuery):
     user = query.from_user
