@@ -78,7 +78,7 @@ async def help_command(client: Bot, message: Message):
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("upload"))
 async def upload_batch(client: Bot, message: Message):
-        if not getattr(client, "db_channel", None):
+    if not getattr(client, "db_channel", None):
         await message.reply_text(
             "Storage channel is not initialized yet. Post a new message in your configured private storage channel first."
         )
