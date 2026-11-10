@@ -1,167 +1,79 @@
 {
-  "name": "Mariya",
-  "description": "Mariya — Telegram file storage and sharing assistant with private links, force-sub, referral access, and configurable file delivery.",
+  "name": "TG File Share/Sharing Bot",
+  "description": "file sharing bot store posts and it can access by special links",
   "keywords": [
     "telegram",
-    "file-store",
-    "file-sharing",
-    "force-sub",
-    "referral",
-    "pyrofork",
-    "mongodb"
+    "file",
+    "sharing"
   ],
-  "repository": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
-  "website": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
-  "logo": "https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/mariya-mark.svg",
-  "success_url": "/",
+  "repository": "https://github.com/CodeXBotz/File-Sharing-Bot",
+  "logo": "https://ibb.co/FgPVtzw",
   "env": {
     "TG_BOT_TOKEN": {
-      "description": "Your bot token from @BotFather."
-    },
-    "APP_ID": {
-      "description": "Your API ID from https://my.telegram.org/apps"
-    },
-    "API_HASH": {
-      "description": "Your API hash from https://my.telegram.org/apps"
-    },
-    "CHANNEL_ID": {
-      "description": "ID of your private database channel (starts with -100). Make the bot an admin there."
+      "description": "Your Bot token, Get it from @Botfather",
+      "value": ""
     },
     "OWNER_ID": {
-      "description": "Your own Telegram user ID."
+      "description": "An integer of consisting of your owner ID",
+      "value": "1250450587"
     },
-    "DB_URL": {
-      "description": "MongoDB connection URL (free cluster: https://www.mongodb.com/atlas)."
+    "APP_ID":{
+      "description": "your app id, take it from my.telegram.org",
+      "value": ""
     },
-    "DB_NAME": {
-      "description": "MongoDB database name.",
-      "value": "FileStoreBot",
-      "required": false
+    "DATABASE_URL": {
+      "description": "Paste your mongo db url",
+      "value": "url"
     },
-    "OWNER_TAG": {
-      "description": "Your public Telegram username without @ (shown to users for support & payments).",
-      "value": "",
-      "required": false
+    "DATABASE_NAME":{
+      "description": "Enter your DATABASE_NAME ",
+      "value": "filesharexbot"
     },
-    "ADMINS": {
-      "description": "Extra admin user IDs separated by spaces (the owner is always an admin).",
-      "value": "",
-      "required": false
+    "API_HASH":{
+      "description": "your api hash, take it from my.telegram.org",
+      "value": ""
     },
-    "ACCESS_MODE": {
-      "description": "How users unlock files: fsub (join channels), referral (invite users), dual (join channels, then invite) or off.",
-      "value": "fsub",
-      "required": false
+    "CHANNEL_ID":{
+      "description": "make a channel (database channel), then make the bot as admin in channel, and it's id",
+      "value": "-100"
     },
-    "FORCE_SUB_CHANNEL": {
-      "description": "Force-sub chat 1 — channel/group ID (-100...) or @username. Leave empty to skip. The bot must be admin there.",
-      "value": "",
-      "required": false
+    "FORCE_SUB_CHANNEL":{
+      "description": "id of the channel or group, if you want enable force sub feature else put 0",
+      "value": "0"
     },
-    "FORCE_SUB_CHANNEL2": {
-      "description": "Force-sub chat 2 (optional).",
-      "value": "",
-      "required": false
-    },
-    "FORCE_SUB_CHANNEL3": {
-      "description": "Force-sub chat 3 (optional).",
-      "value": "",
-      "required": false
-    },
-    "FORCE_SUB_CHANNEL4": {
-      "description": "Force-sub chat 4 (optional).",
-      "value": "",
-      "required": false
-    },
-    "REFERRAL_COUNT": {
-      "description": "Referral / dual mode: how many NEW users someone must invite to unlock files.",
-      "value": "3",
-      "required": false
-    },
-    "REFERRAL_EXPIRE": {
-      "description": "Referral / dual mode: seconds files stay unlocked after reaching the goal (0 = forever).",
-      "value": "0",
-      "required": false
+    "START_MESSAGE": {
+      "description": "Optional: start message of bot, use HTML parsemode format",
+      "value": "Hello {first}\n\nI can store private files in Specified Channel and other users can access it from special link."
     },
     "START_PIC": {
-      "description": "Image sent with the start message — a direct image link, a Telegram file_id or a repo path like assets/start.jpg. Leave empty for none.",
-      "value": "",
-      "required": false
+      "description": "Optional: URL or file path of the image to be sent as the start message,",
+      "value": " "
     },
-    "FORCE_PIC": {
-      "description": "Optional image for the force-sub message.",
-      "value": "",
-      "required": false
+    "FORCE_SUB_MESSAGE": {
+      "description": "Optional: Force Sub message of bot, use HTML parsemode format",
+      "value": "Hello {first}\n\n<b>You need to join in my Channel/Group to use me\n\nKindly Please join Channel</b>"
     },
-    "REFERRAL_PIC": {
-      "description": "Optional image for the referral screen.",
+    "ADMINS": {
+      "description": "A space separated list of user_ids of Admins, they can only create links",
       "value": "",
-      "required": false
-    },
-    "TIME": {
-      "description": "Delete delivered files after this many seconds (0 = never).",
-      "value": "0",
       "required": false
     },
     "PROTECT_CONTENT": {
-      "description": "TRUE stops users from forwarding or saving delivered files.",
-      "value": "FALSE",
+      "description": "Protect contents from getting forwarded",
+      "value": "False",
       "required": false
     },
-    "DISABLE_CHANNEL_BUTTON": {
-      "description": "TRUE = no 'Share URL' button under posts in the database channel.",
-      "value": "TRUE",
-      "required": false
+    "AUTO_DELETE_TIME": {
+      "description": "Set the time in seconds for the automatic deletion of the file. Default is 0, meaning auto-deletion is disabled unless specified.",
+      "value": "0"
     },
-    "USE_SHORTLINK": {
-      "description": "TRUE to earn with a URL shortener.",
-      "value": "FALSE",
-      "required": false
+    "AUTO_DELETE_MSG": {
+      "description": "The custom message shown to the user before the file is automatically deleted. You can include a countdown with {time}.",
+      "value": "This file will be automatically deleted in {time} seconds. Please ensure you have saved any necessary content before this time."
     },
-    "SHORTLINK_API_URL": {
-      "description": "Shortener website without https:// (e.g. gplinks.com).",
-      "value": "gplinks.com",
-      "required": false
-    },
-    "SHORTLINK_API_KEY": {
-      "description": "API key of your shortener.",
-      "value": "",
-      "required": false
-    },
-    "U_S_E_P": {
-      "description": "TRUE = every link goes through the shortener. FALSE = users verify a token once every VERIFY_EXPIRE seconds.",
-      "value": "TRUE",
-      "required": false
-    },
-    "VERIFY_EXPIRE": {
-      "description": "Seconds a verified token stays valid (43200 = 12 hours).",
-      "value": "43200",
-      "required": false
-    },
-    "TUT_VID": {
-      "description": "Tutorial link showing users how to pass your shortener.",
-      "value": "",
-      "required": false
-    },
-    "USE_PAYMENT": {
-      "description": "TRUE shows premium plans (works with USE_SHORTLINK). Premium users skip the shortener and referrals.",
-      "value": "FALSE",
-      "required": false
-    },
-    "UPI_ID": {
-      "description": "Your UPI ID for premium payments.",
-      "value": "",
-      "required": false
-    },
-    "UPI_IMAGE_URL": {
-      "description": "Direct link to your UPI QR code image.",
-      "value": "",
-      "required": false
-    },
-    "SCREENSHOT_URL": {
-      "description": "Optional payment screenshot destination URL.",
-      "value": "",
-      "required": false
+    "AUTO_DEL_SUCCESS_MSG": {
+      "description": "The custom message shown to the user once the file is successfully deleted.",
+      "value": "Your file has been successfully deleted. Thank you for using our service. ✅"
     }
   },
   "buildpacks": [
@@ -170,9 +82,10 @@
     }
   ],
   "formation": {
-    "web": {
+    "worker": {
       "quantity": 1,
       "size": "eco"
     }
   }
 }
+
