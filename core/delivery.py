@@ -21,7 +21,7 @@ from pyrogram.enums import ParseMode
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from config import CUSTOM_CAPTION, LOGGER, PROTECT_CONTENT, TIME
+from config import CUSTOM_CAPTION, LOGGER, PROTECT_CONTENT
 from database.database import add_delete_job, pending_delete_jobs, remove_delete_job
 from helper_func import get_exp_time, get_messages, safe_format
 
@@ -100,9 +100,11 @@ async def deliver(client, chat_id: int, ids: list, payload: str = "", reply_to: 
     if not sent:
         await client.send_message(chat_id, NOT_FOUND_TEXT, reply_to_message_id=reply_to)
         return 0
-    if TIME > 0:
-        notice = await client.send_message(chat_id, REMINDER_TEXT.format(time=get_exp_time(TIME)))
-        await schedule_delete(client, chat_id, sent, notice.id, payload)
+    from core.access import current as current_access
+    delete_after = current_access().auto_delete
+    if delete_after > 0:
+        notice = await client.send_message(chat_id, REMINDER_TEXT.format(time=get_exp_time(delete_after)))
+        await schedule_delete(client, chat_id, sent, notice.id, payload, delay=delete_after)
     return len(sent)
 
 
@@ -112,13 +114,13 @@ def _spawn(coroutine):
     task.add_done_callback(_tasks.discard)
 
 
-async def schedule_delete(client, chat_id: int, message_ids: list, notice_id: int = None, payload: str = ""):
+async def schedule_delete(client, chat_id: int, message_ids: list, notice_id: int = None, payload: str = "", delay: int = None):
     job = {
         "chat_id": chat_id,
         "message_ids": list(message_ids),
         "notice_id": notice_id,
         "payload": payload,
-        "run_at": time.time() + TIME,
+        "run_at": time.time() + (delay if delay is not None else 0),
     }
     try:
         job["_id"] = await add_delete_job(**job)

@@ -120,6 +120,8 @@ async def settings_buttons(client: Bot, query: CallbackQuery):
         settings = await access.update(referral_count=max(1, min(1000, settings.referral_count + step)))
     elif action == "exp":
         settings = await access.update(referral_expire=ui.next_duration(settings.referral_expire))
+    elif action == "delete":
+        settings = await access.update(auto_delete=ui.next_auto_delete(settings.auto_delete))
     elif action == "reset":
         settings = await access.reset()
     await query.answer("✅ ꜱᴀᴠᴇᴅ")

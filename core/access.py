@@ -14,7 +14,7 @@
 
 from dataclasses import dataclass, replace
 
-from config import ACCESS_MODE, REFERRAL_COUNT, REFERRAL_EXPIRE
+from config import ACCESS_MODE, REFERRAL_COUNT, REFERRAL_EXPIRE, TIME
 from database.database import clear_settings, get_settings, save_settings
 
 MODES = ("off", "fsub", "referral", "dual")
@@ -25,7 +25,7 @@ MODE_LABELS = {
     "dual": "🔁 ᴅᴜᴀʟ — ꜰᴏʀᴄᴇ-ꜱᴜʙ ➜ ʀᴇꜰᴇʀʀᴀʟ",
 }
 _KEY = "access"
-_FIELDS = ("mode", "referral_count", "referral_expire")
+_FIELDS = ("mode", "referral_count", "referral_expire", "auto_delete")
 
 
 @dataclass(frozen=True)
@@ -33,6 +33,7 @@ class AccessSettings:
     mode: str = ACCESS_MODE
     referral_count: int = REFERRAL_COUNT
     referral_expire: int = REFERRAL_EXPIRE
+    auto_delete: int = TIME
     overrides: tuple = ()  # names of the values changed with /settings
 
     @property
@@ -61,8 +62,8 @@ def _valid(field: str, value) -> bool:
         return False
     if field == "referral_count":
         return 1 <= value <= 1000
-    if field == "referral_expire":
-        return value >= 0
+    if field in ("referral_expire", "auto_delete"):
+        return value >= 0 and (field != "auto_delete" or value <= 604800)
     return False
 
 

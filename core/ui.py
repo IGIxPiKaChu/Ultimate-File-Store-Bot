@@ -36,6 +36,7 @@ log = LOGGER(__name__)
 REPO_URL = "https://github.com/Trinity-Mods/Ultimate-File-Store-Bot"
 CAPTION_LIMIT = 1024
 UNLOCK_DURATIONS = [0, 3600, 6 * 3600, 12 * 3600, 86400, 3 * 86400, 7 * 86400, 30 * 86400]
+AUTO_DELETE_DURATIONS = [0, 60, 300, 600, 1800, 3600, 6 * 3600, 86400]
 
 _photo_cache = {}
 
@@ -250,6 +251,15 @@ def next_duration(seconds: int) -> int:
     return later[0] if later else UNLOCK_DURATIONS[0]
 
 
+def _auto_delete_label(seconds: int) -> str:
+    return "ᴏꜰꜰ ♾️" if seconds <= 0 else get_exp_time(seconds)
+
+
+def next_auto_delete(seconds: int) -> int:
+    later = [value for value in AUTO_DELETE_DURATIONS if value > seconds]
+    return later[0] if later else AUTO_DELETE_DURATIONS[0]
+
+
 def settings_panel(settings):
     on, off = "✅ ᴏɴ", "❌ ᴏꜰꜰ"
     channels = len(fsub.CHATS)
@@ -264,7 +274,8 @@ def settings_panel(settings):
         f"🔁 ᴍᴏᴅᴇ: <b>{access.MODE_LABELS[settings.mode]}</b>\n"
         f"📢 ꜰᴏʀᴄᴇ-ꜱᴜʙ: <b>{on if settings.fsub_on else off}</b> · {channels} ᴄʜᴀᴛ(ꜱ) ɪɴ ᴄᴏɴꜰɪɢ\n"
         f"👥 ʀᴇꜰᴇʀʀᴀʟ: <b>{on if settings.referral_on else off}</b> · ɢᴏᴀʟ <b>{settings.referral_count}</b>\n"
-        f"⏳ ᴜɴʟᴏᴄᴋ ʟᴀꜱᴛꜱ: <b>{_duration_label(settings.referral_expire)}</b>\n\n"
+        f"⏳ ᴜɴʟᴏᴄᴋ ʟᴀꜱᴛꜱ: <b>{_duration_label(settings.referral_expire)}</b>\n"
+        f"🗑️ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ: <b>{_auto_delete_label(settings.auto_delete)}</b>\n\n"
         f"<blockquote>{' ➜ '.join(steps)}</blockquote>\n"
     )
     if settings.fsub_on and not channels:
@@ -284,6 +295,7 @@ def settings_panel(settings):
             _button("➕", callback_data="set:inc"),
         ],
         [_button(f"⏳ ᴜɴʟᴏᴄᴋ: {_duration_label(settings.referral_expire)}", callback_data="set:exp")],
+        [_button(f"🗑️ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ: {_auto_delete_label(settings.auto_delete)}", callback_data="set:delete")],
         [_button("♻️ ʀᴇꜱᴇᴛ ᴛᴏ ᴄᴏɴꜰɪɢ", callback_data="set:reset"), _button("✖️ ᴄʟᴏꜱᴇ", callback_data="set:close")],
     ]
     return text, InlineKeyboardMarkup(rows)
