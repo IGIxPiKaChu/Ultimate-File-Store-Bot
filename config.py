@@ -234,7 +234,7 @@ START_PIC = env_optional("START_PIC", "")
 
 # Caption added to delivered documents, videos and audio. Placeholders: {filename} {previouscaption}
 # Set it to "none" to keep the original captions.
-CUSTOM_CAPTION = env_optional("CUSTOM_CAPTION", "💗 Shared with you via <b>Mariya</b>\n\n🌐 ɢɪᴛʜᴜʙ: https://github.com/Trinity-Mods\n\n📦 ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ: https://github.com/Trinity-Mods/File-Store-Bot\n\n📢 ᴛᴇʟᴇɢʀᴀᴍ: https://t.me/trinityXmods")
+CUSTOM_CAPTION = env_optional("CUSTOM_CAPTION", "💗 Shared with you via <b>Mariya</b>")
 # TRUE = users can't forward or save the files they receive.
 PROTECT_CONTENT = env_bool("PROTECT_CONTENT", False)
 # Delete delivered files from the user's chat after this many seconds (0 = keep forever). 600 = 10 minutes.
@@ -285,7 +285,7 @@ PRICE5 = env_text("PRICE5", "₹2850")   # 1 year
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # Reply sent when a normal user messages the bot directly ("none" = stay silent).
-USER_REPLY_TEXT = env_optional("USER_REPLY_TEXT", "💗 ʜɪ, ɪ ᴀᴍ ᴍᴀʀɪʏᴀ\n\nᴏɴʟʏ ᴀᴅᴍɪɴꜱ ᴄᴀɴ ᴜꜱᴇ ᴛʜᴇ ʙᴏᴛ ᴅɪʀᴇᴄᴛʟʏ ʙʏ ꜱᴇɴᴅɪɴɢ ꜰɪʟᴇꜱ — ᴏᴛʜᴇʀꜱ ᴄᴀɴɴᴏᴛ ꜱᴇɴᴅ ᴀɴʏᴛʜɪɴɢ ʜᴇʀᴇ.\n\n📦 ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ: https://github.com/Trinity-Mods/File-Store-Bot")
+USER_REPLY_TEXT = env_optional("USER_REPLY_TEXT", "💗 ʜɪ, ɪ ᴀᴍ ᴍᴀʀɪʏᴀ\n\nᴏɴʟʏ ᴀᴅᴍɪɴꜱ ᴄᴀɴ ᴜꜱᴇ ᴛʜᴇ ʙᴏᴛ ᴅɪʀᴇᴄᴛʟʏ ʙʏ ꜱᴇɴᴅɪɴɢ ꜰɪʟᴇꜱ — ᴏᴛʜᴇʀꜱ ᴄᴀɴɴᴏᴛ ꜱᴇɴᴅ ᴀɴʏᴛʜɪɴɢ ʜᴇʀᴇ.")
 # Text of the /stats command. Placeholder: {uptime}
 BOT_STATS_TEXT = env_text("BOT_STATS_TEXT", "<b>BOT UPTIME</b>\n{uptime}", "BOTS_STATS_TEXT")
 
