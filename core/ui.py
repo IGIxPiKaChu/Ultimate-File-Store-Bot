@@ -121,7 +121,7 @@ def start_panel(user):
 def about_panel():
     text = (
         f"<b>○ ʙᴏᴛ: <a href='{REPO_URL}'>Mariya File Share v{__version__}</a>\n"
-        "○ Source: <a href='{REPO_URL}'>Mariya</a>\n"
+        f"○ Source: <a href='{REPO_URL}'>Mariya</a>\n"
         "○ Language: <a href='https://www.python.org/'>Python 3</a>\n"
         "○ Framework: <a href='https://github.com/Mayuri-Chan/pyrofork'>Pyrofork</a>\n"
         "○ Fueled By: <a href='https://t.me/infohub_updates'>InfoHub Updates</a>\n"

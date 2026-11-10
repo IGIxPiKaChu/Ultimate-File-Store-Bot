@@ -153,8 +153,7 @@ Set `START_PIC` to any of these:
 | Image in the repo | `assets/start.jpg` |
 | Several (random) | `https://…/one.jpg https://…/two.jpg` |
 
-A ready-made Trinity Mods picture is included:
-`https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/start.jpg`
+The Mariya brand banner is included at `assets/mariya-banner.svg`. Set `START_PIC` to your own direct image URL or Telegram file ID.
 
 The same formats work for `FORCE_PIC` and `REFERRAL_PIC`. If a picture can't be sent, the bot simply sends
 the text — `/start` never breaks. Telegram allows **1024 characters** under a picture; longer texts are sent without it.
@@ -251,7 +250,7 @@ Set these as **environment variables**, in a **`.env`** file, or directly in **[
 | --- | --- | --- |
 | `START_MESSAGE` | *built-in* | The `/start` text (`START_MSG` also works) |
 | `START_PIC` | *empty* | Start picture — link, file_id or repo path; several = random |
-| `CUSTOM_CAPTION` | *Trinity Mods credit* | Caption for delivered files (`none` keeps originals) |
+| `CUSTOM_CAPTION` | *Mariya branding* | Caption for delivered files (`none` keeps originals) |
 | `PROTECT_CONTENT` | `FALSE` | Block forwarding / saving of delivered files |
 | `TIME` | `600` | Auto-delete delivered files after N seconds (`0` = never) |
 | `DISABLE_CHANNEL_BUTTON` | `TRUE` | Hide the "Share URL" button under DB-channel posts |
@@ -336,7 +335,7 @@ File-Store-Bot/
 ├── core/                🧠 engine: access modes, force-sub, referrals, delivery, screens
 ├── plugins/             🔌 Telegram commands & buttons
 ├── database/            🗄️ MongoDB storage
-├── assets/              🎨 Trinity Mods logos & start picture
+├── assets/              🎨 Mariya brand assets
 ├── .env.example         🔑 sample settings for VPS / local runs
 ├── app.json             🟣 Heroku one-click deploy
 ├── Dockerfile · Procfile · requirements.txt · .python-version
@@ -424,7 +423,7 @@ Values changed in `/settings` take priority over the config. Open `/settings` an
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="assets/wordmark-light.png">
       <source media="(prefers-color-scheme: light)" srcset="assets/wordmark-dark.png">
-      <img alt="Trinity Mods" src="assets/wordmark-dark.png" width="340">
+      <img alt="Mariya" src="assets/mariya-banner.svg" width="340">
     </picture>
   </a>
 </p>
