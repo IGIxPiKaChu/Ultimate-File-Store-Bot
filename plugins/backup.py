@@ -45,7 +45,9 @@ async def _response_json(response, action: str):
     except Exception:
         payload = {"error": (await response.text())[:500]}
     if response.status >= 400:
-        detail = payload.get("error_description") or payload.get("error", {}).get("message") or payload.get("error")
+        error_value = payload.get("error")
+        error_detail = error_value.get("message") if isinstance(error_value, dict) else error_value
+        detail = payload.get("error_description") or error_detail or payload
         raise RuntimeError(f"{action} failed (HTTP {response.status}): {detail}")
     return payload
 
