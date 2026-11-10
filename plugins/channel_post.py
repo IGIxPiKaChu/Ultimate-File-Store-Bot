@@ -1,15 +1,4 @@
-# ────────────────────────────────────────────────────────────────
-
-# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
-# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
-
-# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
-# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
-
-# ────────────────────────────────────────────────────────────────
-
-# 📥 The owner forwards any file from any Telegram chat to the bot → it is stored in the DB channel and a share link comes back.
+#(©)Codexbotz
 
 import asyncio
 from pyrogram import filters, Client
@@ -17,32 +6,19 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait
 
 from bot import Bot
-from config import CHANNEL_ID, DISABLE_CHANNEL_BUTTON, LOGGER
-from helper_func import KNOWN_COMMANDS, owner_filter, encode
+from config import OWNER_ID, CHANNEL_ID, DISABLE_CHANNEL_BUTTON
+from helper_func import encode
 
-log = LOGGER(__name__)
-
-
-@Bot.on_message(filters.private & owner_filter & ~filters.command(KNOWN_COMMANDS))
+@Bot.on_message(filters.private & filters.user(OWNER_ID) & ~filters.command(['start','users','broadcast','batch','genlink','stats']))
 async def channel_post(client: Client, message: Message):
-    # This handler is the admin upload catch-all. Never store plain text or
-    # unknown slash commands as files, otherwise every typo creates a share link.
-    if not any((message.document, message.video, message.audio, message.animation,
-                message.photo, message.voice, message.video_note)):
-        return await message.reply_text(
-            "❌ I can only upload media/files here. Send a document, photo, video or audio file. "
-            "Use /help to see commands.",
-            quote=True,
-        )
-
-    reply_text = await message.reply_text("Please Wait...! 🫷", quote = True)
+    reply_text = await message.reply_text("Please Wait...!", quote = True)
     try:
         post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)
     except FloodWait as e:
         await asyncio.sleep(e.value)
         post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)
     except Exception as e:
-        log.warning(f"Couldn't store a message in the DB channel: {e}")
+        print(e)
         await reply_text.edit_text("Something went Wrong..!")
         return
     converted_id = post_message.id * abs(client.db_channel.id)
@@ -52,7 +28,7 @@ async def channel_post(client: Client, message: Message):
 
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Share URL", url=f'https://telegram.me/share/url?url={link}')]])
 
-    await reply_text.edit(f"<b> Here is your link :</b>\n{link}", reply_markup=reply_markup, disable_web_page_preview = True)
+    await reply_text.edit(f"<b>Here is your link</b>\n\n{link}", reply_markup=reply_markup, disable_web_page_preview = True)
 
     if not DISABLE_CHANNEL_BUTTON:
         try:
@@ -81,14 +57,3 @@ async def new_post(client: Client, message: Message):
         await message.edit_reply_markup(reply_markup)
     except Exception:
         pass
-
-# ────────────────────────────────────────────────────────────────
-
-# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
-# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
-
-# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
-# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
-
-# ────────────────────────────────────────────────────────────────
