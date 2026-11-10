@@ -11,6 +11,13 @@ from helper_func import encode
 
 @Bot.on_message(filters.private & filters.user(OWNER_ID) & ~filters.command(['start','users','broadcast','batch','genlink','stats']))
 async def channel_post(client: Client, message: Message):
+    if not getattr(client, "db_channel", None):
+        await message.reply_text(
+            "Storage channel is not initialized yet. Please post one new message "
+            "in your configured private storage channel, then send this file again."
+        )
+        return
+
     reply_text = await message.reply_text("Please Wait...!", quote = True)
     try:
         post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)
@@ -41,6 +48,10 @@ async def channel_post(client: Client, message: Message):
 
 @Bot.on_message(filters.channel & filters.incoming & filters.chat(CHANNEL_ID))
 async def new_post(client: Client, message: Message):
+
+    # Channel post updates include the full chat peer, even for private channels.
+    # Use this update to seed Pyrogram's peer cache after a fresh bot deployment.
+    client.db_channel = message.chat
 
     if DISABLE_CHANNEL_BUTTON:
         return
