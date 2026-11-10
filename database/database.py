@@ -33,6 +33,7 @@ admin_data = database['admins']
 link_data = database['links']
 settings_data = database['settings']
 delete_queue = database['auto_delete']
+generated_link_data = database['generated_links']
 
 default_verify = {
     'is_verified': False,
@@ -287,6 +288,20 @@ async def remove_delete_job(job_id):
 
 async def pending_delete_jobs() -> list:
     return [doc async for doc in delete_queue.find({})]
+
+
+# ── generated link history ──────────────────────────────────────
+
+async def record_generated_link(link_type: str, admin_id: int, source_message_ids: list, code: str, url: str):
+    """Persist newly generated deep links so they can be included in backups."""
+    await generated_link_data.insert_one({
+        'type': link_type,
+        'admin_id': int(admin_id),
+        'source_message_ids': [int(mid) for mid in source_message_ids],
+        'code': code,
+        'url': url,
+        'created_at': _now(),
+    })
 
 # ────────────────────────────────────────────────────────────────
 
