@@ -27,8 +27,14 @@ async def start_command(client: Client, message: Message):
             base64_string = text.split(" ", 1)[1]
         except:
             return
-        string = await decode(base64_string)
-        argument = string.split("-")
+        try:
+            string = await decode(base64_string)
+            argument = string.split("-")
+            if argument[0] != "get" or len(argument) not in (2, 3):
+                raise ValueError("Invalid share payload")
+        except Exception:
+            await message.reply_text("This share link is invalid or corrupted.")
+            return
         if len(argument) == 3:
             try:
                 start = int(int(argument[1]) / abs(client.db_channel.id))
