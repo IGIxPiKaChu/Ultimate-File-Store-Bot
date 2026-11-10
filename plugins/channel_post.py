@@ -1,4 +1,15 @@
-#(©)CodeXBotz
+# ────────────────────────────────────────────────────────────────
+
+# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
+# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
+
+# ────────────────────────────────────────────────────────────────
+
+# 📥 Admins send any file to the bot → it is stored in the DB channel and a share link comes back.
 
 import asyncio
 from pyrogram import filters, Client
@@ -6,106 +17,68 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait
 
 from bot import Bot
-from config import OWNER_ID, DISABLE_CHANNEL_BUTTON, CHANNEL_ID
-from helper_func import encode
+from config import CHANNEL_ID, DISABLE_CHANNEL_BUTTON, LOGGER
+from helper_func import KNOWN_COMMANDS, admin_filter, encode
+
+log = LOGGER(__name__)
 
 
-async def _copy_to_storage(client: Client, message: Message):
+@Bot.on_message(filters.private & admin_filter & ~filters.command(KNOWN_COMMANDS))
+async def channel_post(client: Client, message: Message):
+    reply_text = await message.reply_text("Please Wait...! 🫷", quote = True)
     try:
-        return await message.copy(chat_id=client.db_channel.id, disable_notification=True)
+        post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)
     except FloodWait as e:
         await asyncio.sleep(e.value)
-        return await message.copy(chat_id=client.db_channel.id, disable_notification=True)
-
-
-def _share_markup(link: str):
-    return InlineKeyboardMarkup([[
-        InlineKeyboardButton("🔁 Share URL", url=f"https://telegram.me/share/url?url={link}")
-    ]])
-
-
-@Bot.on_message(
-    filters.private & filters.user(OWNER_ID) & filters.media
-    & ~filters.command(["start", "users", "broadcast", "batch", "genlink", "stats", "stop", "complete", "upload", "cancel", "help"])
-)
-async def channel_post(client: Client, message: Message):
-    if not getattr(client, "db_channel", None):
-        await message.reply_text(
-            "Storage channel is not initialized. Post one new message in "
-            "your configured private storage channel, then try again."
-        )
-        return
-
-    sessions = getattr(client, "upload_sessions", {})
-    session = sessions.get(message.from_user.id)
-
-    if session is not None:
-        if not message.media:
-            await message.reply_text(
-                "Please forward a video or file. Send /stop when you have finished the batch."
-            )
-            return
-
-        status = await message.reply_text("Saving to Mariya storage…")
-        try:
-            async with session["lock"]:
-                saved = await _copy_to_storage(client, message)
-                if session["first_id"] is None:
-                    session["first_id"] = saved.id
-                session["last_id"] = saved.id
-                session["count"] += 1
-                count = session["count"]
-        except Exception as e:
-            client.LOGGER(__name__).exception("Batch file copy failed: %s", e)
-            await status.edit_text("This file could not be saved. You can retry it.")
-            return
-
-        await status.edit_text(
-            f"Added to batch: <b>{count}</b> file(s).\n"
-            "Forward the next file or send /stop to get one link."
-        )
-        return
-
-    status = await message.reply_text("Please wait…", quote=True)
-    try:
-        saved = await _copy_to_storage(client, message)
+        post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)
     except Exception as e:
-        client.LOGGER(__name__).exception("File copy failed: %s", e)
-        await status.edit_text("Something went wrong while saving this file.")
+        log.warning(f"Couldn't store a message in the DB channel: {e}")
+        await reply_text.edit_text("Something went Wrong..!")
         return
+    converted_id = post_message.id * abs(client.db_channel.id)
+    string = f"get-{converted_id}"
+    base64_string = await encode(string)
+    link = f"https://t.me/{client.username}?start={base64_string}"
 
-    encoded = await encode(f"get-{saved.id * abs(client.db_channel.id)}")
-    link = f"https://t.me/{client.username}?start={encoded}"
-    markup = _share_markup(link)
-    await status.edit_text(
-        f"<b>Here is your link</b>\n\n{link}",
-        reply_markup=markup,
-        disable_web_page_preview=True
-    )
+    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Share URL", url=f'https://telegram.me/share/url?url={link}')]])
+
+    await reply_text.edit(f"<b> Here is your link :</b>\n{link}", reply_markup=reply_markup, disable_web_page_preview = True)
 
     if not DISABLE_CHANNEL_BUTTON:
         try:
-            await saved.edit_reply_markup(markup)
+            await post_message.edit_reply_markup(reply_markup)
         except FloodWait as e:
             await asyncio.sleep(e.value)
-            await saved.edit_reply_markup(markup)
+            await post_message.edit_reply_markup(reply_markup)
         except Exception:
             pass
 
-
 @Bot.on_message(filters.channel & filters.incoming & filters.chat(CHANNEL_ID))
 async def new_post(client: Client, message: Message):
-    # Learn the private storage channel peer from its incoming channel update.
-    client.db_channel = message.chat
+
     if DISABLE_CHANNEL_BUTTON:
         return
 
-    encoded = await encode(f"get-{message.id * abs(client.db_channel.id)}")
-    link = f"https://t.me/{client.username}?start={encoded}"
+    converted_id = message.id * abs(client.db_channel.id)
+    string = f"get-{converted_id}"
+    base64_string = await encode(string)
+    link = f"https://t.me/{client.username}?start={base64_string}"
+    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Share URL", url=f'https://telegram.me/share/url?url={link}')]])
     try:
-        await message.edit_reply_markup(_share_markup(link))
+        await message.edit_reply_markup(reply_markup)
     except FloodWait as e:
         await asyncio.sleep(e.value)
-        await message.edit_reply_markup(_share_markup(link))
+        await message.edit_reply_markup(reply_markup)
     except Exception:
         pass
+
+# ────────────────────────────────────────────────────────────────
+
+# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
+# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
+
+# ────────────────────────────────────────────────────────────────

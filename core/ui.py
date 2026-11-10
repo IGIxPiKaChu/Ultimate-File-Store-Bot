@@ -108,10 +108,7 @@ def back_button():
 def start_panel(user):
     settings = access.current()
     text = safe_format(START_MSG, **user_placeholders(user))
-    rows = [
-        [_button("📤 Upload Files", callback_data="help:upload"), _button("🔗 Generate Link", callback_data="help:link")],
-        [_button("📚 Help & Commands", callback_data="help:commands")],
-    ]
+    rows = [[_button("💗 ᴍᴀʀɪʏᴀ", url=REPO_URL)]]
     if settings.referral_on:
         rows.append([_button("👥 ʀᴇꜰᴇʀ & ᴜɴʟᴏᴄᴋ ꜰɪʟᴇꜱ", callback_data="ref:home")])
     row = [_button("💸 ᴘʀᴇᴍɪᴜᴍ", callback_data="buy_prem")] if USE_PAYMENT else []
@@ -123,8 +120,8 @@ def start_panel(user):
 
 def about_panel():
     text = (
-        f"<b>○ ʙᴏᴛ: <a href='{REPO_URL}'>Mariya v{__version__}</a>\n"
-        "○ Project: Mariya File Store\n"
+        f"<b>○ ʙᴏᴛ: <a href='{REPO_URL}'>Mariya File Share v{__version__}</a>\n"
+        "○ Source: <a href='{REPO_URL}'>Mariya</a>\n"
         "○ Language: <a href='https://www.python.org/'>Python 3</a>\n"
         "○ Framework: <a href='https://github.com/Mayuri-Chan/pyrofork'>Pyrofork</a>\n"
         "○ Fueled By: <a href='https://t.me/infohub_updates'>InfoHub Updates</a>\n"

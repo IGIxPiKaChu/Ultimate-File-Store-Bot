@@ -1,81 +1,133 @@
-#(©)CodeXBotz
+# ────────────────────────────────────────────────────────────────
+
+# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
+# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
+
+# ────────────────────────────────────────────────────────────────
+
+# 🤖 The bot client. On startup it checks the database channel and the force-sub chats, loads admins and
+# live settings, restores pending auto-deletes and starts the health-check web server.
 
 import sys
 from datetime import datetime
+
 from aiohttp import web
-import pyromod.listen
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 
+from config import ADMINS, API_HASH, APP_ID, CHANNEL_ID, LOGGER, OWNER_ID, PORT, TG_BOT_TOKEN, TG_BOT_WORKERS
+from core import __version__, access, delivery, fsub
+from database.database import dbclient, ensure_indexes, full_adminbase, ping_database
 from plugins import web_server
-from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL, CHANNEL_ID, OWNER_ID, PORT
 
-ascii_art = """
-░█████╗░░█████╗░██████╗░███████╗██╗░░██╗██████╗░░█████╗░████████╗███████╗
-██╔══██╗██╔══██╗██╔══██╗╚════██║
-██║░░╚═╝██║░░██║██║░░██║█████╗░░░╚███╔╝░██████╦╝
-██║░░██╗██║░░██║██║░░██║██╔══╝░░░██╔██╗░
-╚█████╔╝╚█████╔╝██████╔╝███████╗██╔╝╚██╗
-░╚════╝░░╚════╝░╚═════╝░╚══════╝╚═╝░░╚═╝
-"""
 
 class Bot(Client):
     def __init__(self):
-        if not TG_BOT_TOKEN or not APP_ID or not API_HASH:
-            raise RuntimeError("Missing Telegram credentials: TG_BOT_TOKEN, APP_ID, or API_HASH.")
-        if not CHANNEL_ID or not OWNER_ID:
-            raise RuntimeError("Missing CHANNEL_ID or OWNER_ID.")
         super().__init__(
             name="Bot",
             api_hash=API_HASH,
             api_id=APP_ID,
-            plugins={"root": "plugins"},
+            plugins={
+                "root": "plugins"
+            },
             workers=TG_BOT_WORKERS,
-            bot_token=TG_BOT_TOKEN
+            bot_token=TG_BOT_TOKEN,
+            parse_mode=ParseMode.HTML,
         )
         self.LOGGER = LOGGER
+        self.username = None
+        self.db_channel = None
+        self.uptime = datetime.now()
+        self._web_runner = None
 
-    async def start(self):
-        await super().start()
+    async def start(self, *args, **kwargs):
+        await super().start(*args, **kwargs)
+        log = self.LOGGER(__name__)
         usr_bot_me = await self.get_me()
+        self.username = usr_bot_me.username
         self.uptime = datetime.now()
 
-        if FORCE_SUB_CHANNEL:
-            try:
-                link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
-                if not link:
-                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL)
-                    link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
-                self.invitelink = link
-            except Exception:
-                self.LOGGER(__name__).exception("Force-sub channel setup failed. Check FORCE_SUB_CHANNEL and invite-link permission.")
-                sys.exit(1)
-
-        # Pyrogram's GetDialogs method is not available to bot accounts.
-        # A private channel peer is learned from an incoming channel_post update.
-        # Try the cache once; if it is not known yet, let the bot start and
-        # initialize db_channel when the first channel post arrives.
-        self.db_channel = None
         try:
-            self.db_channel = await self.get_chat(CHANNEL_ID)
-            self.LOGGER(__name__).info("Mariya storage channel resolved from peer cache.")
+            await ping_database()
         except Exception as e:
-            self.LOGGER(__name__).warning(
-                "Storage channel is not in Pyrogram's peer cache yet (%s). "
-                "Post one new message in the configured private storage channel "
-                "after startup; the bot will learn the channel from that update.", e
+            log.warning(e)
+            log.warning("Couldn't connect to MongoDB! Double check DB_URL, and in MongoDB Atlas → Network Access "
+                        "allow connections from anywhere (0.0.0.0/0).")
+            sys.exit(1)
+        await ensure_indexes()
+        settings = await access.load()
+
+        try:
+            db_channel = await self.get_chat(CHANNEL_ID)
+            self.db_channel = db_channel
+            test = await self.send_message(chat_id = db_channel.id, text = "Test Message")
+            await test.delete()
+        except Exception as e:
+            log.warning(e)
+            log.warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_ID Value, Current Value {CHANNEL_ID}")
+            sys.exit(1)
+
+        try:
+            chats = await fsub.setup(self)
+        except fsub.SetupError as e:
+            log.warning(e.error)
+            log.warning("Bot can't use a Force Sub chat! Make sure the bot is Admin there with the "
+                        f"'Invite Users via Link' permission and double check the value. Current value: {e.chat}")
+            sys.exit(1)
+
+        for admin_id in await full_adminbase():
+            if admin_id not in ADMINS:
+                ADMINS.append(admin_id)
+
+        restored = await delivery.restore_jobs(self)
+
+        self._web_runner = web.AppRunner(await web_server())
+        await self._web_runner.setup()
+        await web.TCPSite(self._web_runner, "0.0.0.0", PORT).start()
+
+        if settings.fsub_on and not chats:
+            log.warning("Force-sub is enabled but no FORCE_SUB_CHANNEL is set — that step is skipped.")
+        log.info(
+            f"Mariya File Share v{__version__} is live as @{self.username} | mode: {settings.mode} | "
+            f"force-sub chats: {len(chats)} | referral goal: {settings.referral_count} | "
+            f"auto-delete jobs restored: {restored}"
+        )
+        self.LOGGER(__name__).info("Mariya File Share is online.")
+        try:
+            await self.send_message(
+                chat_id=OWNER_ID,
+                text=(
+                    "<b>Bot has started! 😉</b>\n\n"
+                    f"🔁 ᴍᴏᴅᴇ: <b>{access.MODE_LABELS[settings.mode]}</b>\n"
+                    f"📢 ꜰᴏʀᴄᴇ-ꜱᴜʙ ᴄʜᴀᴛꜱ: <b>{len(chats)}</b>\n"
+                    f"👥 ʀᴇꜰᴇʀʀᴀʟ ɢᴏᴀʟ: <b>{settings.referral_count}</b>\n\n"
+                    "<i>ꜱᴇɴᴅ /settings ᴛᴏ ᴄʜᴀɴɢᴇ ᴛʜᴇ ᴀᴄᴄᴇꜱꜱ ᴍᴏᴅᴇ ʟɪᴠᴇ.</i>"
+                ),
             )
-
-        self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info("Mariya bot connected successfully and is running.")
-        print(ascii_art)
-        print("Welcome to Mariya File Sharing Bot")
-        self.username = usr_bot_me.username
-
-        app = web.AppRunner(await web_server())
-        await app.setup()
-        await web.TCPSite(app, "0.0.0.0", PORT).start()
+        except Exception as e:
+            log.warning(f"Couldn't message the owner ({e}). Send /start to the bot from the OWNER_ID account.")
 
     async def stop(self, *args):
+        if self._web_runner:
+            await self._web_runner.cleanup()
         await super().stop()
-        self.LOGGER(__name__).info("Mariya stopped.")
+        try:
+            await dbclient.close()
+        except Exception:
+            pass
+        self.LOGGER(__name__).info("Mariya File Share stopped.")
+
+# ────────────────────────────────────────────────────────────────
+
+# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
+# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
+
+# ────────────────────────────────────────────────────────────────
