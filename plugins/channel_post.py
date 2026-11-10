@@ -26,7 +26,7 @@ def _share_markup(link: str):
 
 @Bot.on_message(
     filters.private & filters.user(OWNER_ID)
-    & ~filters.command(["start", "users", "broadcast", "batch", "genlink", "stats", "stop", "cancel"])
+    & ~filters.command(["start", "users", "broadcast", "batch", "genlink", "stats", "stop", "complete", "upload", "cancel"])
 )
 async def channel_post(client: Client, message: Message):
     if not getattr(client, "db_channel", None):
