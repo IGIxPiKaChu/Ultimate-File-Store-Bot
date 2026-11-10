@@ -62,7 +62,7 @@ async def manual_batch(client: Bot, message: Message):
     )
 
 
-# NEW AUTOMATIC UPLOAD SYSTEM — /upload batch ... /complete
+# NEW AUTOMATIC UPLOAD SYSTEM — /upload ... /complete
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("help"))
 async def help_command(client: Bot, message: Message):
     await message.reply_text(
@@ -71,18 +71,14 @@ async def help_command(client: Bot, message: Message):
         "• Send /batch, then forward the first and last DB-channel messages.\n"
         "• Send /genlink, then forward one DB-channel message.\n\n"
         "NEW AUTOMATIC SYSTEM:\n"
-        "• Send /upload batch, forward videos/files, then send /complete.\n"
+        "• Send /upload, forward videos/files, then send /complete.\n"
         "• Send /cancel to cancel the active upload session."
     )
 
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("upload"))
 async def upload_batch(client: Bot, message: Message):
-    if len(message.command) < 2 or message.command[1].lower() != "batch":
-        await message.reply_text("Use /upload batch to start an automatic batch upload.")
-        return
-
-    if not getattr(client, "db_channel", None):
+        if not getattr(client, "db_channel", None):
         await message.reply_text(
             "Storage channel is not initialized yet. Post a new message in your configured private storage channel first."
         )
@@ -116,7 +112,7 @@ async def stop_batch(client: Bot, message: Message):
     sessions = getattr(client, "upload_sessions", {})
     session = sessions.get(message.from_user.id)
     if session is None:
-        await message.reply_text("There is no active automatic batch. Send /upload batch to start one.")
+        await message.reply_text("There is no active automatic batch. Send /upload to start one.")
         return
 
     await asyncio.sleep(0.5)
@@ -128,7 +124,7 @@ async def stop_batch(client: Bot, message: Message):
         last_id = session["last_id"]
 
     if not count or first_id is None or last_id is None:
-        await message.reply_text("The batch is empty, so I didn't create a link. Send /upload batch to try again.")
+        await message.reply_text("The batch is empty, so I didn't create a link. Send /upload to try again.")
         return
 
     channel_id = abs(client.db_channel.id)
