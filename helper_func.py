@@ -1,9 +1,8 @@
-#(©)Codexbotz
+#(©)CodeXBotz
 
 import base64
 import re
 import asyncio
-import logging 
 from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
 from config import FORCE_SUB_CHANNEL, ADMINS, AUTO_DELETE_TIME, AUTO_DEL_SUCCESS_MSG
@@ -17,79 +16,49 @@ async def is_subscribed(filter, client, update):
     if user_id in ADMINS:
         return True
     try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL, user_id = user_id)
+        member = await client.get_chat_member(chat_id=FORCE_SUB_CHANNEL, user_id=user_id)
     except UserNotParticipant:
         return False
-
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
-        return False
-    else:
-        return True
+    return member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]
 
 async def encode(string):
-    string_bytes = string.encode("ascii")
-    base64_bytes = base64.urlsafe_b64encode(string_bytes)
-    base64_string = (base64_bytes.decode("ascii")).strip("=")
-    return base64_string
+    return base64.urlsafe_b64encode(string.encode("ascii")).decode("ascii").rstrip("=")
 
 async def decode(base64_string):
-    base64_string = base64_string.strip("=") # links generated before this commit will be having = sign, hence striping them to handle padding errors.
-    base64_bytes = (base64_string + "=" * (-len(base64_string) % 4)).encode("ascii")
-    string_bytes = base64.urlsafe_b64decode(base64_bytes) 
-    string = string_bytes.decode("ascii")
-    return string
+    base64_string = base64_string.strip("=")
+    padded = (base64_string + "=" * (-len(base64_string) % 4)).encode("ascii")
+    return base64.urlsafe_b64decode(padded).decode("ascii")
 
 async def get_messages(client, message_ids):
     messages = []
-    total_messages = 0
-    while total_messages != len(message_ids):
-        temb_ids = message_ids[total_messages:total_messages+200]
+    for offset in range(0, len(message_ids), 200):
+        chunk = message_ids[offset:offset + 200]
         try:
-            msgs = await client.get_messages(
-                chat_id=client.db_channel.id,
-                message_ids=temb_ids
-            )
+            result = await client.get_messages(chat_id=client.db_channel.id, message_ids=chunk)
         except FloodWait as e:
-            await asyncio.sleep(e.x)
-            msgs = await client.get_messages(
-                chat_id=client.db_channel.id,
-                message_ids=temb_ids
-            )
-        except:
-            pass
-        total_messages += len(temb_ids)
-        messages.extend(msgs)
+            await asyncio.sleep(e.value)
+            result = await client.get_messages(chat_id=client.db_channel.id, message_ids=chunk)
+        messages.extend(result if isinstance(result, list) else [result])
     return messages
 
 async def get_message_id(client, message):
     if message.forward_from_chat:
-        if message.forward_from_chat.id == client.db_channel.id:
-            return message.forward_from_message_id
-        else:
-            return 0
-    elif message.forward_sender_name:
+        return message.forward_from_message_id if message.forward_from_chat.id == client.db_channel.id else 0
+    if message.forward_sender_name:
         return 0
-    elif message.text:
-        pattern = "https://t.me/(?:c/)?(.*)/(\d+)"
-        matches = re.match(pattern,message.text)
-        if not matches:
+    if message.text:
+        match = re.match(r"https://t.me/(?:c/)?(.*)/(\\d+)", message.text)
+        if not match:
             return 0
-        channel_id = matches.group(1)
-        msg_id = int(matches.group(2))
+        channel_id, msg_id = match.group(1), int(match.group(2))
         if channel_id.isdigit():
-            if f"-100{channel_id}" == str(client.db_channel.id):
-                return msg_id
-        else:
-            if channel_id == client.db_channel.username:
-                return msg_id
-    else:
-        return 0
+            return msg_id if f"-100{channel_id}" == str(client.db_channel.id) else 0
+        return msg_id if channel_id == client.db_channel.username else 0
+    return 0
 
 def get_readable_time(seconds: int) -> str:
-    count = 0
-    up_time = ""
-    time_list = []
-    time_suffix_list = ["s", "m", "h", "days"]
+    count, up_time, time_list = 0, "", []
+    suffixes = ["s", "m", "h", "days"]
     while count < 4:
         count += 1
         remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
@@ -97,25 +66,23 @@ def get_readable_time(seconds: int) -> str:
             break
         time_list.append(int(result))
         seconds = int(remainder)
-    hmm = len(time_list)
-    for x in range(hmm):
-        time_list[x] = str(time_list[x]) + time_suffix_list[x]
+    for index, value in enumerate(time_list):
+        time_list[index] = str(value) + suffixes[index]
     if len(time_list) == 4:
         up_time += f"{time_list.pop()}, "
     time_list.reverse()
-    up_time += ":".join(time_list)
-    return up_time
+    return up_time + ":".join(time_list)
 
 async def delete_file(messages, client, process):
     await asyncio.sleep(AUTO_DELETE_TIME)
     for msg in messages:
         try:
             await client.delete_messages(chat_id=msg.chat.id, message_ids=[msg.id])
+        except FloodWait as e:
+            await asyncio.sleep(e.value)
+            await client.delete_messages(chat_id=msg.chat.id, message_ids=[msg.id])
         except Exception as e:
-            await asyncio.sleep(e.x)
-            print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
-
+            print(f"Could not delete delivered message {msg.id}: {e}")
     await process.edit_text(AUTO_DEL_SUCCESS_MSG)
-
 
 subscribed = filters.create(is_subscribed)
