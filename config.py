@@ -145,6 +145,12 @@ DB_URL = env_text("DB_URL", "")
 # Name of the MongoDB database (created automatically).
 DB_NAME = env_text("DB_NAME", "Mariya")
 
+# Google Drive backup OAuth credentials (optional until /backup is configured).
+GDRIVE_CLIENT_ID = env_text("GDRIVE_CLIENT_ID", "")
+GDRIVE_CLIENT_SECRET = env_text("GDRIVE_CLIENT_SECRET", "")
+GDRIVE_REFRESH_TOKEN = env_text("GDRIVE_REFRESH_TOKEN", "")
+GDRIVE_FOLDER_ID = env_optional("GDRIVE_FOLDER_ID", "")
+
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #  👑 OWNER & ADMINS
