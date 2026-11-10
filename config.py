@@ -32,8 +32,8 @@ AUTO_DELETE_MSG = os.environ.get("AUTO_DELETE_MSG", "This file will be automatic
 AUTO_DEL_SUCCESS_MSG = os.environ.get("AUTO_DEL_SUCCESS_MSG", "Your file has been successfully deleted. Thank you for using our service. ✅")
 DISABLE_CHANNEL_BUTTON = os.environ.get("DISABLE_CHANNEL_BUTTON", "False").lower() == "true"
 
-BOT_STATS_TEXT = "<b>BOT UPTIME</b>\\n{uptime}"
-USER_REPLY_TEXT = "❌Don't send me messages directly I'm only File Share bot!"
+BOT_STATS_TEXT = os.environ.get("BOT_STATS_TEXT", "<b>MARIYA UPTIME</b>\\n{uptime}")
+USER_REPLY_TEXT = os.environ.get("USER_REPLY_TEXT", "💗 Welcome to Mariya. Only admins can upload files directly; everyone else can open a shared file link.")
 ADMINS = [OWNER_ID] if OWNER_ID else []
 
 LOG_FILE_NAME = "filesharingbot.txt"
