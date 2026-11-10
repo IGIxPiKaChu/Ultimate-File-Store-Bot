@@ -21,10 +21,10 @@ routes = web.RouteTableDef()
 async def root_route_handler(request):
     return web.json_response({
         "status": "running",
-        "bot": "File Store Bot",
+        "bot": "Mariya File Share",
         "version": __version__,
-        "by": "Trinity Mods",
-        "source": "https://github.com/Trinity-Mods/File-Store-Bot",
+        "by": "Mariya",
+        "source": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
     })
 
 # ────────────────────────────────────────────────────────────────
