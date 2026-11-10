@@ -54,13 +54,17 @@ async def batch(client: Bot, message: Message):
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("stop"))
 async def stop_batch(client: Bot, message: Message):
     sessions = getattr(client, "upload_sessions", {})
-    session = sessions.pop(message.from_user.id, None)
+    session = sessions.get(message.from_user.id)
     if session is None:
         await message.reply_text("There is no active batch. Send /batch to start one.")
         return
 
-    # Wait for any in-flight copy to finish before finalizing the range.
+    # Let earlier forwarded-message updates enter their handlers, then wait
+    # for any active storage copy before closing the session.
+    await asyncio.sleep(0.5)
     async with session["lock"]:
+        if sessions.get(message.from_user.id) is session:
+            sessions.pop(message.from_user.id, None)
         count = session["count"]
         first_id = session["first_id"]
         last_id = session["last_id"]
