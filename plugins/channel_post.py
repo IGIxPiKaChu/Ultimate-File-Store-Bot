@@ -9,7 +9,7 @@
 
 # ────────────────────────────────────────────────────────────────
 
-# 📥 Admins send any file to the bot → it is stored in the DB channel and a share link comes back.
+# 📥 The owner forwards any file from any Telegram chat to the bot → it is stored in the DB channel and a share link comes back.
 
 import asyncio
 from pyrogram import filters, Client
@@ -18,12 +18,12 @@ from pyrogram.errors import FloodWait
 
 from bot import Bot
 from config import CHANNEL_ID, DISABLE_CHANNEL_BUTTON, LOGGER
-from helper_func import KNOWN_COMMANDS, admin_filter, encode
+from helper_func import KNOWN_COMMANDS, owner_filter, encode
 
 log = LOGGER(__name__)
 
 
-@Bot.on_message(filters.private & admin_filter & ~filters.command(KNOWN_COMMANDS))
+@Bot.on_message(filters.private & owner_filter & ~filters.command(KNOWN_COMMANDS))
 async def channel_post(client: Client, message: Message):
     # This handler is the admin upload catch-all. Never store plain text or
     # unknown slash commands as files, otherwise every typo creates a share link.
