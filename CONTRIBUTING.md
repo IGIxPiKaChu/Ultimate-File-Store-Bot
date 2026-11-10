@@ -27,8 +27,8 @@ We’ll review and merge as quickly as possible!
 ## 🛠️ Running the bot locally
 
 ```bash
-git clone https://github.com/<your-username>/Ultimate-File-Store-Bot.git
-cd Ultimate-File-Store-Bot
+git clone https://github.com/<your-username>/File-Store-Bot.git
+cd File-Store-Bot
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env        # fill in a test bot token, a test channel and a MongoDB URL
@@ -48,7 +48,7 @@ Please keep the Trinity Mods credit header at the top and bottom of every file.
 
 ## 📜 Licensing
 
-All contributions made to this repository are automatically licensed under the terms of the **GNU General Public License v3.0**. By submitting your code, you agree that it will be covered by the same [GPL-3.0 License](https://github.com/Trinity-Mods/Ultimate-File-Store-Bot/blob/main/LICENSE) that governs this project.
+All contributions made to this repository are automatically licensed under the terms of the **GNU General Public License v3.0**. By submitting your code, you agree that it will be covered by the same [GPL-3.0 License](https://github.com/Trinity-Mods/File-Store-Bot/blob/main/LICENSE) that governs this project.
 
 If you have any questions or concerns regarding licensing, feel free to reach out to the maintainers.
 
@@ -56,11 +56,11 @@ If you have any questions or concerns regarding licensing, feel free to reach ou
 
 ## 🐛 Reporting Bugs
 
-We track bugs using GitHub’s [Issues](https://github.com/Trinity-Mods/Ultimate-File-Store-Bot/issues) system.
+We track bugs using GitHub’s [Issues](https://github.com/Trinity-Mods/File-Store-Bot/issues) system.
 
 To report a bug:
 
-1. Go to the [Issues page](https://github.com/Trinity-Mods/Ultimate-File-Store-Bot/issues).
+1. Go to the [Issues page](https://github.com/Trinity-Mods/File-Store-Bot/issues).
 2. Click on **“New Issue”**.
 3. Fill out the bug template with as much detail as possible (what you did, what you expected, the bot's log lines).
 

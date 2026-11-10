@@ -23,8 +23,8 @@ async def root_route_handler(request):
         "status": "running",
         "bot": "Mariya File Share",
         "version": __version__,
-        "by": "Mariya",
-        "source": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
+        "by": "Trinity Mods",
+        "source": "https://github.com/Trinity-Mods/Ultimate-File-Store-Bot",
     })
 
 # ────────────────────────────────────────────────────────────────

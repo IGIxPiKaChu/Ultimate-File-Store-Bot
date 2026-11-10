@@ -1,6 +1,6 @@
 {
   "name": "Mariya File Share",
-  "description": "Mariya is your personal Telegram file-sharing bot. Store files privately and share them with Telegram links.",
+  "description": "Telegram Mariya File Share by Trinity Mods — private share links, 0-4 force-sub channels, referral & dual access modes, start image, shortener earnings, auto-delete and premium.",
   "keywords": [
     "telegram",
     "file-store",
@@ -10,9 +10,9 @@
     "pyrofork",
     "mongodb"
   ],
-  "repository": "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot",
+  "repository": "https://github.com/Trinity-Mods/Ultimate-File-Store-Bot",
   "website": "https://github.com/Trinity-Mods",
-  "logo": "https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/mariya-mark.svg",
+  "logo": "https://raw.githubusercontent.com/Trinity-Mods/Ultimate-File-Store-Bot/main/assets/icon.png",
   "success_url": "/",
   "env": {
     "TG_BOT_TOKEN": {

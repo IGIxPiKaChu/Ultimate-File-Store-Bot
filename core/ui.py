@@ -33,7 +33,7 @@ from helper_func import get_exp_time, progress_bar, referral_link, safe_format, 
 
 log = LOGGER(__name__)
 
-REPO_URL = "https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot"
+REPO_URL = "https://github.com/Trinity-Mods/Ultimate-File-Store-Bot"
 CAPTION_LIMIT = 1024
 UNLOCK_DURATIONS = [0, 3600, 6 * 3600, 12 * 3600, 86400, 3 * 86400, 7 * 86400, 30 * 86400]
 
@@ -108,7 +108,7 @@ def back_button():
 def start_panel(user):
     settings = access.current()
     text = safe_format(START_MSG, **user_placeholders(user))
-    rows = [[_button("💗 ᴍᴀʀɪʏᴀ", url=REPO_URL)]]
+    rows = [[_button("💝 ᴛʀɪɴɪᴛʏ ᴍᴏᴅꜱ", url="https://t.me/trinityXmods")]]
     if settings.referral_on:
         rows.append([_button("👥 ʀᴇꜰᴇʀ & ᴜɴʟᴏᴄᴋ ꜰɪʟᴇꜱ", callback_data="ref:home")])
     row = [_button("💸 ᴘʀᴇᴍɪᴜᴍ", callback_data="buy_prem")] if USE_PAYMENT else []
@@ -121,7 +121,7 @@ def start_panel(user):
 def about_panel():
     text = (
         f"<b>○ ʙᴏᴛ: <a href='{REPO_URL}'>Mariya File Share v{__version__}</a>\n"
-        f"○ Source: <a href='{REPO_URL}'>Mariya</a>\n"
+        "○ More Bots: <a href='https://github.com/Trinity-Mods'>Trinity Mods</a>\n"
         "○ Language: <a href='https://www.python.org/'>Python 3</a>\n"
         "○ Framework: <a href='https://github.com/Mayuri-Chan/pyrofork'>Pyrofork</a>\n"
         "○ Fueled By: <a href='https://t.me/infohub_updates'>InfoHub Updates</a>\n"

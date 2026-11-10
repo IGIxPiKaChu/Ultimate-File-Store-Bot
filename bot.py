@@ -96,7 +96,7 @@ class Bot(Client):
             f"force-sub chats: {len(chats)} | referral goal: {settings.referral_count} | "
             f"auto-delete jobs restored: {restored}"
         )
-        self.LOGGER(__name__).info("Mariya File Share is online.")
+        self.LOGGER(__name__).info("Bot made by @the_universal_being!")
         try:
             await self.send_message(
                 chat_id=OWNER_ID,
@@ -119,7 +119,7 @@ class Bot(Client):
             await dbclient.close()
         except Exception:
             pass
-        self.LOGGER(__name__).info("Mariya File Share stopped.")
+        self.LOGGER(__name__).info("Bot stopped. Contact @the_universal_being")
 
 # ────────────────────────────────────────────────────────────────
 

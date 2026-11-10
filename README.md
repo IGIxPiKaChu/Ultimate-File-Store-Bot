@@ -1,14 +1,14 @@
-<!-- ⚡ TRINITY MODS · FILE STORE BOT — github.com/Trinity-Mods/File-Store-Bot -->
+<!-- ⚡ TRINITY MODS · Mariya File Share — github.com/IGIxPiKaChu/Ultimate-File-Store-Bot -->
 
 <p align="center">
-  <img src="assets/mariya-banner.svg" alt="Mariya File Share" width="100%"/>
+  <img src="assets/banner.png" alt="Trinity Mods" width="100%"/>
 </p>
 
 <h1 align="center">Mariya File Share</h1>
 
 <p align="center">
   <b>Store · Link · Protect · Grow · Monetize</b><br>
-  Your personal Telegram file-sharing bot by <b>Mariya</b>
+  The all-in-one Telegram Mariya File Share by <b>Trinity Mods</b>
 </p>
 
 <p align="center">
@@ -26,8 +26,8 @@
 <p align="center">
   <a href="https://t.me/trinityXmods"><img src="https://img.shields.io/badge/updates-@trinityXmods-080F0D?style=flat-square&logo=telegram&logoColor=5BF5C1" alt="Telegram updates"/></a>
   <a href="https://github.com/Trinity-Mods"><img src="https://img.shields.io/badge/github-Trinity--Mods-080F0D?style=flat-square&logo=github&logoColor=5BF5C1" alt="GitHub"/></a>
-  <a href="https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot/stargazers"><img src="https://img.shields.io/github/stars/Trinity-Mods/File-Store-Bot?style=flat-square&color=5BF5C1&labelColor=080F0D" alt="stars"/></a>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=Trinity-Mods.File-Store-Bot&left_text=visitors&left_color=080F0D&right_color=5BF5C1" alt="visitors"/>
+  <a href="https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot/stargazers"><img src="https://img.shields.io/github/stars/IGIxPiKaChu/Ultimate-File-Store-Bot?style=flat-square&color=5BF5C1&labelColor=080F0D" alt="stars"/></a>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=Trinity-Mods.Ultimate-File-Store-Bot&left_text=visitors&left_color=080F0D&right_color=5BF5C1" alt="visitors"/>
 </p>
 
 <p align="center">
@@ -153,7 +153,8 @@ Set `START_PIC` to any of these:
 | Image in the repo | `assets/start.jpg` |
 | Several (random) | `https://…/one.jpg https://…/two.jpg` |
 
-The Mariya brand banner is included at `assets/mariya-banner.svg`. Set `START_PIC` to your own direct image URL or Telegram file ID.
+A ready-made Trinity Mods picture is included:
+`https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/start.jpg`
 
 The same formats work for `FORCE_PIC` and `REFERRAL_PIC`. If a picture can't be sent, the bot simply sends
 the text — `/start` never breaks. Telegram allows **1024 characters** under a picture; longer texts are sent without it.
@@ -165,7 +166,7 @@ the text — `/start` never breaks. Telegram allows **1024 characters** under a 
 <p align="center">
   <a href="https://heroku.com/deploy?template=https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
   &nbsp;
-  <a href="https://app.koyeb.com/deploy?type=git&repository=github.com/Trinity-Mods/File-Store-Bot&branch=main&name=file-store-bot"><img src="https://www.koyeb.com/static/images/deploy/button.svg" alt="Deploy to Koyeb"></a>
+  <a href="https://app.koyeb.com/deploy?type=git&repository=github.com/IGIxPiKaChu/Ultimate-File-Store-Bot&branch=main&name=file-store-bot"><img src="https://www.koyeb.com/static/images/deploy/button.svg" alt="Deploy to Koyeb"></a>
   &nbsp;
   <a href="https://railway.app/new/template/1jKLr4"><img src="https://railway.app/button.svg" alt="Deploy on Railway"></a>
   &nbsp;
@@ -250,7 +251,7 @@ Set these as **environment variables**, in a **`.env`** file, or directly in **[
 | --- | --- | --- |
 | `START_MESSAGE` | *built-in* | The `/start` text (`START_MSG` also works) |
 | `START_PIC` | *empty* | Start picture — link, file_id or repo path; several = random |
-| `CUSTOM_CAPTION` | *Mariya branding* | Caption for delivered files (`none` keeps originals) |
+| `CUSTOM_CAPTION` | *Trinity Mods credit* | Caption for delivered files (`none` keeps originals) |
 | `PROTECT_CONTENT` | `FALSE` | Block forwarding / saving of delivered files |
 | `TIME` | `600` | Auto-delete delivered files after N seconds (`0` = never) |
 | `DISABLE_CHANNEL_BUTTON` | `TRUE` | Hide the "Share URL" button under DB-channel posts |
@@ -326,7 +327,7 @@ ping - check if the bot is alive
 ## 📂 Project structure
 
 ```
-File-Store-Bot/
+Ultimate-File-Store-Bot/
 ├── main.py              🚀 entry point — python3 main.py
 ├── bot.py               🤖 bot client & startup checks
 ├── config.py            ⚙️ every setting, explained
@@ -335,7 +336,7 @@ File-Store-Bot/
 ├── core/                🧠 engine: access modes, force-sub, referrals, delivery, screens
 ├── plugins/             🔌 Telegram commands & buttons
 ├── database/            🗄️ MongoDB storage
-├── assets/              🎨 Mariya brand assets
+├── assets/              🎨 Trinity Mods logos & start picture
 ├── .env.example         🔑 sample settings for VPS / local runs
 ├── app.json             🟣 Heroku one-click deploy
 ├── Dockerfile · Procfile · requirements.txt · .python-version
@@ -423,7 +424,7 @@ Values changed in `/settings` take priority over the config. Open `/settings` an
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="assets/wordmark-light.png">
       <source media="(prefers-color-scheme: light)" srcset="assets/wordmark-dark.png">
-      <img alt="Mariya" src="assets/mariya-banner.svg" width="340">
+      <img alt="Trinity Mods" src="assets/wordmark-dark.png" width="340">
     </picture>
   </a>
 </p>
@@ -432,8 +433,3 @@ Values changed in `/settings` take priority over the config. Open `/settings` an
   <sub>© 2025–2026 <b>Trinity Mods</b> · Released under the <a href="LICENSE">GPL-3.0 License</a>.<br>
   Developed and maintained by <a href="https://t.me/trinityXmods">@trinityXmods</a> — please keep the credits when you fork or deploy.</sub>
 </p>
-
-
----
-
-**Mariya attribution:** This project is based on [Trinity Mods' File Store Bot](https://github.com/Trinity-Mods/File-Store-Bot) and remains under the original GPL-3.0 licence. Original copyright and author notices are retained.

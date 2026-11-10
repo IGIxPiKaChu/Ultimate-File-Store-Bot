@@ -9,7 +9,7 @@
 
 # ────────────────────────────────────────────────────────────────
 
-#  ⚙️  FILE STORE BOT — CONFIGURATION
+#  ⚙️  Mariya File Share — CONFIGURATION
 #
 #  Every setting below can be provided in three ways (the first one found wins):
 #    1. An environment variable → Heroku / Koyeb / Render / Railway dashboard, or `docker run -e ...`
@@ -131,7 +131,7 @@ def env_ids(name, default=""):
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # 🔴 Bot token — create a bot with https://t.me/BotFather and paste its token here.
-TG_BOT_TOKEN = env_text("TG_BOT_TOKEN", "", "BOT_TOKEN")
+TG_BOT_TOKEN = env_text("TG_BOT_TOKEN", "")
 # 🔴 API ID and API hash of your Telegram app — get both from https://my.telegram.org/apps
 APP_ID = env_int("APP_ID", 0)
 API_HASH = env_text("API_HASH", "")
@@ -143,7 +143,7 @@ OWNER_ID = env_int("OWNER_ID", 0)
 # 🔴 MongoDB connection URL — a free cluster from https://www.mongodb.com/atlas works great.
 DB_URL = env_text("DB_URL", "")
 # Name of the MongoDB database (created automatically).
-DB_NAME = env_text("DB_NAME", "FileStoreBot")
+DB_NAME = env_text("DB_NAME", "Mariya")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -211,14 +211,14 @@ REFERRAL_PIC = env_optional("REFERRAL_PIC", "")
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # Message sent on /start. Placeholders: {first} {last} {username} {mention} {id}
-START_MSG = env_text("START_MESSAGE", "ʜᴇʟʟᴏ {mention}!! 💗\\n\\nɪ ᴀᴍ ᴍᴀʀɪʏᴀ, ʏᴏᴜʀ ᴛᴇʟᴇɢʀᴀᴍ ꜰɪʟᴇ ꜱʜᴀʀɪɴɢ ᴀꜱꜱɪꜱᴛᴀɴᴛ. ꜱᴇɴᴅ ᴀ ꜰɪʟᴇ ᴛᴏ ɢᴇᴛ ᴀ ꜱʜᴀʀᴇᴀʙʟᴇ ʟɪɴᴋ! 🎀", "START_MSG")
+START_MSG = env_text("START_MESSAGE", "ʜᴇʟʟᴏ ᴛʜᴇʀᴇ {mention}!!🌚\n\nɪ ᴀᴍ ᴅᴇꜱɪɢɴᴇᴅ ᴛᴏ ꜱʜᴀʀᴇ ꜰɪʟᴇꜱ ᴛʜʀᴏᴜɢʜ ꜱᴘᴇᴄɪᴀʟ ʟɪɴᴋꜱ!! 🪄\n\nɪ ᴀᴍ ᴅᴇꜱɪɢɴᴇᴅ ʙʏ @trinityXmods ᴏɴ ᴛᴇʟᴇɢʀᴀᴍ. 🎀", "START_MSG")
 # Picture sent together with the start message. You can use:
 #   • a direct image link      → https://telegra.ph/file/xxxx.jpg  (telegra.ph, envs.sh, imgbb, GitHub raw …)
 #   • a Telegram photo file_id → AgACAgUAAxkBAAI…
 #   • an image inside the repo → assets/start.jpg
 # Put several (separated by spaces) and one is picked at random each time. Leave empty for a text-only start.
 # Telegram allows 1024 characters under a picture — longer start messages are sent without it.
-# Ready-made example: https://raw.githubusercontent.com/IGIxPiKaChu/Ultimate-File-Store-Bot/main/assets/start.jpg
+# Ready-made example: https://raw.githubusercontent.com/Trinity-Mods/File-Store-Bot/main/assets/start.jpg
 START_PIC = env_optional("START_PIC", "")
 
 
@@ -228,7 +228,7 @@ START_PIC = env_optional("START_PIC", "")
 
 # Caption added to delivered documents, videos and audio. Placeholders: {filename} {previouscaption}
 # Set it to "none" to keep the original captions.
-CUSTOM_CAPTION = env_optional("CUSTOM_CAPTION", "💗 Shared with you via <b>Mariya</b>\\n\\n📦 Source: https://github.com/IGIxPiKaChu/Ultimate-File-Store-Bot")
+CUSTOM_CAPTION = env_optional("CUSTOM_CAPTION", "ʙᴏᴛ ᴅᴇꜱɪɢɴᴇᴅ ᴡɪᴛʜ ❤️ ʙʏ <b>Trinity Mods</b>\n\n🌐 ɢɪᴛʜᴜʙ: https://github.com/Trinity-Mods\n\n📦 ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ: https://github.com/Trinity-Mods/File-Store-Bot\n\n📢 ᴛᴇʟᴇɢʀᴀᴍ: https://t.me/trinityXmods")
 # TRUE = users can't forward or save the files they receive.
 PROTECT_CONTENT = env_bool("PROTECT_CONTENT", False)
 # Delete delivered files from the user's chat after this many seconds (0 = keep forever). 600 = 10 minutes.
@@ -252,7 +252,7 @@ U_S_E_P = env_bool("U_S_E_P", True) and USE_SHORTLINK
 # How long a verified token stays valid, in seconds. 43200 = 12 hours, 86400 = 24 hours.
 VERIFY_EXPIRE = env_int("VERIFY_EXPIRE", 43200, minimum=60)
 # Tutorial video that shows users how to get through your shortener.
-TUT_VID = env_url("TUT_VID", "")
+TUT_VID = env_url("TUT_VID", "https://t.me/trinityXmods/53")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -262,8 +262,8 @@ TUT_VID = env_url("TUT_VID", "")
 
 USE_PAYMENT = env_bool("USE_PAYMENT", True) and USE_SHORTLINK
 # Your UPI ID and a direct link to your UPI QR code image.
-UPI_ID = env_text("UPI_ID", "")
-UPI_IMAGE_URL = env_url("UPI_IMAGE_URL", "")
+UPI_ID = env_text("UPI_ID", "sendrajbooks@fam")
+UPI_IMAGE_URL = env_url("UPI_IMAGE_URL", "https://envs.sh/Vpg.jpg")
 # Where users send their payment screenshot (defaults to your OWNER_TAG chat).
 SCREENSHOT_URL = env_url("SCREENSHOT_URL", f"https://t.me/{OWNER_TAG}")
 # Plan prices — change only the amounts / currency.
@@ -279,7 +279,7 @@ PRICE5 = env_text("PRICE5", "₹2850")   # 1 year
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # Reply sent when a normal user messages the bot directly ("none" = stay silent).
-USER_REPLY_TEXT = env_optional("USER_REPLY_TEXT", "ʜɪ, ɪ ᴀᴍ ᴍᴀʀɪʏᴀ 💗\\n\\nᴏɴʟʏ ᴀᴅᴍɪɴꜱ ᴄᴀɴ ꜱᴇɴᴅ ꜰɪʟᴇꜱ ᴅɪʀᴇᴄᴛʟʏ ᴛᴏ ᴍᴇ.")
+USER_REPLY_TEXT = env_optional("USER_REPLY_TEXT", "ʜɪ, ɪ ᴀᴍ ᴍᴀᴅᴇ ʙʏ @trinityXmods\n\nᴏɴʟʏ ᴀᴅᴍɪɴꜱ ᴄᴀɴ ᴜꜱᴇ ᴛʜᴇ ʙᴏᴛ ᴅɪʀᴇᴄᴛʟʏ ʙʏ ꜱᴇɴᴅɪɴɢ ꜰɪʟᴇꜱ — ᴏᴛʜᴇʀꜱ ᴄᴀɴɴᴏᴛ ꜱᴇɴᴅ ᴀɴʏᴛʜɪɴɢ ʜᴇʀᴇ.\n\n📦 ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ: https://github.com/Trinity-Mods/File-Store-Bot")
 # Text of the /stats command. Placeholder: {uptime}
 BOT_STATS_TEXT = env_text("BOT_STATS_TEXT", "<b>BOT UPTIME</b>\n{uptime}", "BOTS_STATS_TEXT")
 
