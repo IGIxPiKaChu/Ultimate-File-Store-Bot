@@ -15,6 +15,18 @@ def _share_markup(link: str):
     ]])
 
 
+@Bot.on_message(filters.private & filters.user(ADMINS) & filters.command("help"))
+async def help_command(client: Bot, message: Message):
+    await message.reply_text(
+        "<b>Mariya File Share — Help</b>\n\n"
+        "• Send /upload batch to start a batch upload.\n"
+        "• Forward videos/files to Mariya.\n"
+        "• Send /complete to get one link for the batch.\n"
+        "• Send /cancel to cancel the batch session.\n\n"
+        "For a single file, forward it to Mariya and she will create a link."
+    )
+
+
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command(["batch", "upload"]))
 async def batch(client: Bot, message: Message):
     if message.command[0].lower() == "upload" and (len(message.command) < 2 or message.command[1].lower() != "batch"):
